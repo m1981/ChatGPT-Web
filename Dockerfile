@@ -24,8 +24,22 @@ COPY . .
 
 RUN yarn build
 
-FROM base AS runner
+# Development
+FROM base AS dev
+
 WORKDIR /app
+COPY --from=deps /app/node_modules ./node_modules
+COPY . .
+
+ENV PATH /app/node_modules/.bin:$PATH
+
+EXPOSE 3000
+
+CMD ["yarn", "dev"]
+
+
+# Runner stage
+FROM base AS runner
 
 RUN apk add proxychains-ng
 

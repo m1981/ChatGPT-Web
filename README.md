@@ -1,4 +1,12 @@
 <div align="center">
+<pre>
+Build dev image
+podman --cgroup-manager=cgroupfs build --no-cache -t localhost/chat:dev --target=dev .
+
+Run dev
+podman --cgroup-manager=cgroupfs run --rm  -p 3000:3000 -v $(pwd):/app -v /app/node_modules --name chat_dev localhost/chat:dev
+</pre>
+
 <img src="./docs/images/icon.svg" alt="icon"/>
 
 <h1 align="center">ChatGPT Next Web</h1>

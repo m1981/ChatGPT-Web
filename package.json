@@ -8,7 +8,7 @@
     "build": "yarn fetch && next build",
     "start": "next start",
     "lint": "next lint",
-    "fetch": "node ./scripts/fetch-prompts.mjs",
+    "fetch": "true",
     "prepare": "husky install",
     "proxy-dev": "sh ./scripts/init-proxy.sh && proxychains -f ./scripts/proxychains.conf yarn dev"
   },
