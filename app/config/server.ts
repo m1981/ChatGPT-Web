@@ -1,4 +1,9 @@
-import md5 from "spark-md5";
+/*
+This updated version replaces MD5 hashing with the more secure bcrypt hashing method.
+Make sure you have installed the bcrypt package using npm install bcrypt before using
+this updated code.
+ */
+import bcrypt from "bcrypt";
 
 declare global {
   namespace NodeJS {
@@ -17,7 +22,7 @@ const ACCESS_CODES = (function getAccessCodes(): Set<string> {
   try {
     const codes = (code?.split(",") ?? [])
       .filter((v) => !!v)
-      .map((v) => md5.hash(v.trim()));
+      .map((v) => bcrypt.hashSync(v.trim(), 10));
     return new Set(codes);
   } catch (e) {
     return new Set();

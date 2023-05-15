@@ -1,21 +1,25 @@
-import { NextRequest, NextResponse } from "next/server";
+// create a Next.js API route handler that authenticates the user using Passport.js and returns a JSON object containing configuration data.
+import { NextApiRequest, NextApiResponse } from 'next';
+import nextConnect from 'next-connect';
+import passport from '../../config/passport';
+import { getServerSideConfig } from "../config/passport";
 
-import { getServerSideConfig } from "../../config/server";
+const config = getServerSideConfig();
 
-const serverConfig = getServerSideConfig();
+const handler = nextConnect<NextApiRequest, NextApiResponse>();
 
-// Danger! Don not write any secret value here!
-// 警告！不要在这里写入任何敏感信息！
-const DANGER_CONFIG = {
-  needCode: serverConfig.needCode,
-};
+handler.use(passport.initialize());
 
-declare global {
-  type DangerConfig = typeof DANGER_CONFIG;
-}
+handler.post(passport.authenticate('local', { session: false }), (req, res) => {
+  if (!req.user) {
+    res.status(401).json({ message: 'Unauthorized' });
+    return;
+  }
 
-export async function POST(req: NextRequest) {
-  return NextResponse.json({
-    needCode: serverConfig.needCode,
+  res.status(200).json({
+    needCode: config.needCode,
+    // Return any other necessary data, but make sure not to expose sensitive information
   });
-}
+});
+
+export default handler;
