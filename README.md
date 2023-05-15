@@ -5,6 +5,12 @@ podman --cgroup-manager=cgroupfs build --no-cache -t localhost/chat:dev --target
 
 Run dev
 podman --cgroup-manager=cgroupfs run --rm  -p 3000:3000 -v $(pwd):/app -v /app/node_modules --name chat_dev localhost/chat:dev
+
+
+docker build -t chat_tests .
+podman --cgroup-manager=cgroupfs build --no-cache -t localhost/chat:dev --target=dev .
+podman --cgroup-manager=cgroupfs run -it --rm --entrypoint=/bin/sh localhost/chat:dev -c "yarn test"
+
 </pre>
 
 <img src="./docs/images/icon.svg" alt="icon"/>
