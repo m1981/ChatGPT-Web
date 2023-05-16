@@ -17,7 +17,7 @@
     "@hello-pangea/dnd": "^16.2.0",
     "@svgr/webpack": "^6.5.1",
     "@vercel/analytics": "^0.1.11",
-    "bcryptjs": "^2.4.3",
+    "crypto-js": "^4.1.1",
     "dompurify": "^3.0.2",
     "emoji-picker-react": "^4.4.7",
     "eventsource-parser": "^0.1.0",

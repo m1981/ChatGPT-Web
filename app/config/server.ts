@@ -1,9 +1,5 @@
-/*
-This updated version replaces MD5 hashing with the more secure bcrypt hashing method.
-Make sure you have installed the bcrypt package using npm install bcrypt before using
-this updated code.
- */
-import bcrypt from "bcryptjs";
+
+import CryptoJS from "crypto-js";
 
 declare global {
   namespace NodeJS {
@@ -22,7 +18,7 @@ const ACCESS_CODES = (function getAccessCodes(): Set<string> {
   try {
     const codes = (code?.split(",") ?? [])
       .filter((v) => !!v)
-      .map((v) => bcrypt.hashSync(v.trim(), 10));
+      .map((v) => CryptoJS.SHA256(v.trim()).toString());
     return new Set(codes);
   } catch (e) {
     return new Set();
