@@ -1,6 +1,7 @@
 // passport.js
 import passport from 'passport';
 import { Strategy as LocalStrategy } from 'passport-local';
+import CryptoJS from "crypto-js";
 import { getServerSideConfig } from "./server";
 
 const config = getServerSideConfig();
@@ -8,7 +9,7 @@ const config = getServerSideConfig();
 passport.use(new LocalStrategy(
   function(username, password, done) {
     // todo: Replace this with your own authentication logic
-    const hashedAccessCode = bcrypt.hashSync(password, 10);
+    const hashedAccessCode = CryptoJS.SHA256(password).toString();
     if (config.codes.has(hashedAccessCode)) {
       return done(null, { username });
     } else {
@@ -18,3 +19,4 @@ passport.use(new LocalStrategy(
 ));
 
 export default passport;
+
