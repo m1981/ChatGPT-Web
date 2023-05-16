@@ -2,7 +2,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import nextConnect from 'next-connect';
 import passport from '../../config/passport';
-import { getServerSideConfig } from "../config/passport";
+import { getServerSideConfig } from "../../config/passport";
 
 const config = getServerSideConfig();
 
