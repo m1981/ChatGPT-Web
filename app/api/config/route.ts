@@ -21,6 +21,6 @@ handler.post(passport.authenticate('local', { session: false }), (req, res) => {
 });
 
 const nextHandler = handler;
-export default function handler(req: NextApiRequest, res: NextApiResponse) {
+export default function apiHandler(req: NextApiRequest, res: NextApiResponse) {
   return nextHandler(req, res);
 }
