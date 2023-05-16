@@ -317,7 +317,7 @@
 
 .chat-message-user {
   display: flex;
-  flex-direction: row-reverse;
+  /*flex-direction: row-reverse;*/
 }
 
 .chat-message-container {
@@ -337,7 +337,7 @@
 }
 
 .chat-message-user > .chat-message-container {
-  align-items: flex-end;
+  align-items: flex-start;
 }
 
 .chat-message-avatar {
@@ -366,13 +366,12 @@
   box-sizing: border-box;
   max-width: 100%;
   margin-top: 10px;
-  border-radius: 10px;
   background-color: rgba(0, 0, 0, 0.05);
   padding: 10px;
   font-size: 14px;
   user-select: text;
   word-break: break-word;
-  border: var(--border-in-light);
+  border: 0;
   position: relative;
 }
 
