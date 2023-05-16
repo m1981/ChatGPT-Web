@@ -3,7 +3,7 @@ This updated version replaces MD5 hashing with the more secure bcrypt hashing me
 Make sure you have installed the bcrypt package using npm install bcrypt before using
 this updated code.
  */
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 
 declare global {
   namespace NodeJS {
