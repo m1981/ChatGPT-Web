@@ -1,8 +1,7 @@
-// create a Next.js API route handler that authenticates the user using Passport.js and returns a JSON object containing configuration data.
 import { NextApiRequest, NextApiResponse } from 'next';
 import nextConnect from 'next-connect';
 import passport from '../../config/passport';
-import { getServerSideConfig } from "../../config/server"; // Changed from "../../config/passport"
+import { getServerSideConfig } from "../../config/server";
 
 const config = getServerSideConfig();
 
@@ -18,9 +17,10 @@ handler.post(passport.authenticate('local', { session: false }), (req, res) => {
 
   res.status(200).json({
     needCode: config.needCode,
-    // Return any other necessary data, but make sure not to expose sensitive information
   });
 });
 
-export default handler;
-
+const nextHandler = handler;
+export default function handler(req: NextApiRequest, res: NextApiResponse) {
+  return nextHandler(req, res);
+}
