@@ -73,7 +73,7 @@ export function Markdown(
   return (
     <div
       className="markdown-body"
-      style={{ fontSize: `${props.fontSize ?? 14}px` }}
+      style={{ fontSize: `${props.fontSize ?? 15}px` }}
       ref={mdRef}
       onContextMenu={props.onContextMenu}
       onDoubleClickCapture={props.onDoubleClickCapture}
