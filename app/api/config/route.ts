@@ -1,23 +1,21 @@
-import { NextApiRequest, NextApiResponse } from 'next';
-import nextConnect from 'next-connect';
-import passport from '../../config/passport';
+import { NextRequest, NextResponse } from "next/server";
+
 import { getServerSideConfig } from "../../config/server";
 
-const config = getServerSideConfig();
+const serverConfig = getServerSideConfig();
 
-const handler = nextConnect<NextApiRequest, NextApiResponse>();
+// Danger! Don not write any secret value here!
+// 警告！不要在这里写入任何敏感信息！
+const DANGER_CONFIG = {
+  needCode: serverConfig.needCode,
+};
 
-handler.use(passport.initialize());
+declare global {
+  type DangerConfig = typeof DANGER_CONFIG;
+}
 
-handler.post(passport.authenticate('local', { session: false }), (req, res) => {
-  if (!req.user) {
-    res.status(401).json({ message: 'Unauthorized' });
-    return;
-  }
-
-  res.status(200).json({
-    needCode: config.needCode,
+export async function POST(req: NextRequest) {
+  return NextResponse.json({
+    needCode: serverConfig.needCode,
   });
-});
-
-export default handler;
+}

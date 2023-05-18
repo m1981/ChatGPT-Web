@@ -1,5 +1,4 @@
-
-import CryptoJS from "crypto-js";
+import md5 from "spark-md5";
 
 declare global {
   namespace NodeJS {
@@ -18,7 +17,7 @@ const ACCESS_CODES = (function getAccessCodes(): Set<string> {
   try {
     const codes = (code?.split(",") ?? [])
       .filter((v) => !!v)
-      .map((v) => CryptoJS.SHA256(v.trim()).toString());
+      .map((v) => md5.hash(v.trim()));
     return new Set(codes);
   } catch (e) {
     return new Set();
