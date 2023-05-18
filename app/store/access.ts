@@ -64,7 +64,7 @@ export const useAccessStore = create<AccessControlStore>()(
           body: null,
           headers: {
             "Content-Type": "application/json",
-            "X-CSRF-Token": localStorage.getItem("csrfToken"),
+            "X-CSRF-Token": localStorage.getItem("csrfToken") || "",
           },
         })
           .then((res) => res.json())
@@ -79,6 +79,7 @@ export const useAccessStore = create<AccessControlStore>()(
             fetchState = 2;
           });
       },
+
 }),
 {
   name: ACCESS_KEY,
