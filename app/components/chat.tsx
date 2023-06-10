@@ -125,7 +125,7 @@ function exportMessages(messages: Message[], topic: string) {
         icon={<DownloadIcon />}
         bordered
         text={Locale.Export.Download}
-        onClick={() => downloadAs(jsonData, jsonData)}
+        onClick={() => downloadAs(jsonData, jsonFilename)}
       />,
     ],
   });
