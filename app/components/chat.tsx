@@ -92,15 +92,18 @@ export function Avatar(props: { role: Message["role"]; model?: ModelType }) {
 
 function exportMessages(messages: Message[], topic: string) {
   const mdText =
-    `# ${topic}\n\n` +
+    '# ' + topic + '\n\n' +
     messages
       .map((m) => {
         return m.role === "user"
-          ? `## ${Locale.Export.MessageFromYou}:\n${m.content}`
-          : `## ${Locale.Export.MessageFromChatGPT}:\n${m.content.trim()}`;
+          ? '## ' + Locale.Export.MessageFromYou + ':\n' + m.content
+          : '## ' + Locale.Export.MessageFromChatGPT + ':\n' + m.content.trim();
       })
       .join("\n\n");
   const filename = `${topic}.md`;
+
+  const jsonData = JSON.stringify(messages, null, 2);
+  const jsonFilename = `${topic}.json`;
 
   showModal({
     title: Locale.Export.Title,
@@ -122,11 +125,12 @@ function exportMessages(messages: Message[], topic: string) {
         icon={<DownloadIcon />}
         bordered
         text={Locale.Export.Download}
-        onClick={() => downloadAs(mdText, filename)}
+        onClick={() => downloadAs(jsonData, jsonData)}
       />,
     ],
   });
 }
+
 
 function PromptToast(props: {
   showToast?: boolean;
