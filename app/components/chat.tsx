@@ -165,12 +165,14 @@ function PromptToast(props: {
       const file = event.target.files[0];
       const reader = new FileReader();
 
-      reader.onload = async (fileEvent) => {
-        try {
-          const conversationHistory = JSON.parse(fileEvent.target.result as string);
-          loadConversationHistoryFromFile(conversationHistory);
-        } catch (error) {
-          console.error("Error reading conversation history file:", error);
+      reader.onload = async (fileEvent: ProgressEvent<FileReader>) => {
+        if (fileEvent.target) {
+          try {
+            const conversationHistory = JSON.parse(fileEvent.target.result as string);
+            loadConversationHistoryFromFile(conversationHistory);
+          } catch (error) {
+            console.error("Error reading conversation history file:", error);
+          }
         }
       };
 
