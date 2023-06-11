@@ -7,8 +7,7 @@ import {
   requestChatStream,
   requestWithPrompt,
 } from "../requests";
-import { isMobileScreen, trimTopic } from "../utils";
-
+import { isMobileScreen, trimTopic, loadConversationHistory } from "../utils";
 import Locale from "../locales";
 import { showToast } from "../components/ui-lib";
 
