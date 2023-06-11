@@ -141,23 +141,23 @@ function PromptToast(props: {
   const session = chatStore.currentSession();
   const context = session.context;
 
-    const handleFileUpload = (event) => {
-    const file = event.target.files[0];
-    const reader = new FileReader();
+  const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const file = event.target.files[0];
+  const reader = new FileReader();
 
-    reader.onload = async (fileEvent) => {
-      try {
-        const conversationHistory = JSON.parse(fileEvent.target.result);
-        loadConversationHistoryFromFile(conversationHistory);
-      } catch (error) {
-        console.error("Error reading conversation history file:", error);
-      }
-    };
-
-    if (file) {
-      reader.readAsText(file);
+  reader.onload = async (fileEvent) => {
+    try {
+      const conversationHistory = JSON.parse(fileEvent.target.result as string);
+      loadConversationHistoryFromFile(conversationHistory);
+    } catch (error) {
+      console.error("Error reading conversation history file:", error);
     }
   };
+
+  if (file) {
+    reader.readAsText(file);
+  }
+};
   const addContextPrompt = (prompt: Message) => {
     chatStore.updateCurrentSession((session) => {
       session.context.push(prompt);
