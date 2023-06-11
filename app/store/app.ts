@@ -519,12 +519,53 @@ export const useChatStore = create<ChatStore>()(
         set(() => ({ sessions }));
       },
 
-      resetSession() {
+      resetSession(conversationHistory) {
+        // Update the current session
         get().updateCurrentSession((session) => {
-          session.messages = [];
-          session.memoryPrompt = "";
+          session.messages = []; // Clears previous messages
+
+          // Adds the history messages into the current chat session
+          for (const message of conversationHistory) {
+            const formattedMessage = {
+              ...message,
+              streaming: !!message.streaming, // Normalize the streaming property
+              isError: false,
+            };
+
+            session.messages.push(formattedMessage);
+          }
         });
-      },
+      }
+
+      loadConversationHistoryFromFile(conversationHistory) {
+        for (const message of conversationHistory) {
+          if (!validateMessageFormat(message)) {
+            console.error('Invalid message format in conversation history file');
+            return;   // Do not load the conversation history if there's an invalid message format
+          }
+        }
+
+        resetSession(conversationHistory);
+      }
+
+      validateMessageFormat(message) {
+        const validKeys = ['id', 'date', 'role', 'content', 'streaming', 'model'];
+
+        // Check if all required keys are present
+        for (const key of validKeys) {
+          if (!(key in message)) {
+            return false;
+          }
+        }
+
+        // Check if the role is either 'user' or 'assistant'
+        if (message.role !== 'user' && message.role !== 'assistant') {
+          return false;
+        }
+        // Additional validation checks can be added here
+        return true;
+      }
+
 
       summarizeSession() {
         const session = get().currentSession();
