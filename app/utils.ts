@@ -3,6 +3,12 @@ import { useEffect, useState } from "react";
 import { showToast } from "./components/ui-lib";
 import Locale from "./locales";
 
+export async function loadConversationHistory() {
+  const response = await fetch("/path/to/history.json");
+  const history = await response.json();
+  return history;
+}
+
 export function trimTopic(topic: string) {
   return topic.replace(/[，。！？”“"、,.!?]*$/, "");
 }
