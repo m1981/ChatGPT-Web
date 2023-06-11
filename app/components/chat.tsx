@@ -1,4 +1,5 @@
 import { useDebounce, useDebouncedCallback } from "use-debounce";
+import React from 'react';
 import { memo, useState, useRef, useEffect, useLayoutEffect } from "react";
 
 import SendWhiteIcon from "../icons/send-white.svg";
