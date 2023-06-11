@@ -535,7 +535,7 @@ export const useChatStore = create<ChatStore>()(
             session.messages.push(formattedMessage);
           }
         });
-      }
+      },
 
       loadConversationHistoryFromFile(conversationHistory) {
         for (const message of conversationHistory) {
@@ -544,9 +544,8 @@ export const useChatStore = create<ChatStore>()(
             return;   // Do not load the conversation history if there's an invalid message format
           }
         }
-
         resetSession(conversationHistory);
-      }
+      },
 
       validateMessageFormat(message) {
         const validKeys = ['id', 'date', 'role', 'content', 'streaming', 'model'];
@@ -564,7 +563,7 @@ export const useChatStore = create<ChatStore>()(
         }
         // Additional validation checks can be added here
         return true;
-      }
+      },
 
 
       summarizeSession() {
