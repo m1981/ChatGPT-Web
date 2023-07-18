@@ -297,7 +297,9 @@
 .chat-body {
   flex: 1;
   overflow: auto;
-  padding: 20px;
+  padding-top: 20px;
+  padding-left: 5px;
+  padding-right: 5px;
   padding-bottom: 40px;
   position: relative;
 }
@@ -372,6 +374,7 @@
   user-select: text;
   word-break: break-word;
   border: 0;
+  border-radius: 10px;
   position: relative;
 }
 
