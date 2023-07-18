@@ -804,7 +804,8 @@ export function Chat() {
                   />
                 </div>
                 {!isUser && !message.preview && (
-
+                  <div className={styles["chat-message-actions"]}>
+                  </div>
                 )}
               </div> 
             </div>
