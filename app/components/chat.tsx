@@ -1,5 +1,4 @@
 import { useDebounce, useDebouncedCallback } from "use-debounce";
-import React from 'react';
 import { memo, useState, useRef, useEffect, useLayoutEffect } from "react";
 
 import SendWhiteIcon from "../icons/send-white.svg";
@@ -141,7 +140,7 @@ function PromptToast(props: {
   const chatStore = useChatStore();
   const session = chatStore.currentSession();
   const context = session.context;
-  
+
   const addContextPrompt = (prompt: Message) => {
     chatStore.updateCurrentSession((session) => {
       session.context.push(prompt);
@@ -160,28 +159,6 @@ function PromptToast(props: {
     });
   };
 
-  const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.files) {
-      const file = event.target.files[0];
-      const reader = new FileReader();
-
-      reader.onload = async (fileEvent: ProgressEvent<FileReader>) => {
-        if (fileEvent.target) {
-          try {
-            const conversationHistory = JSON.parse(fileEvent.target.result as string);
-            loadConversationHistoryFromFile(conversationHistory);
-          } catch (error) {
-            console.error("Error reading conversation history file:", error);
-          }
-        }
-      };
-
-      if (file) {
-        reader.readAsText(file);
-      }
-    }
-  };
-  
   return (
     <div className={chatStyle["prompt-toast"]} key="prompt-toast">
       {props.showToast && (
@@ -261,6 +238,7 @@ function PromptToast(props: {
                     />
                   </div>
                 ))}
+
                 <div className={chatStyle["context-prompt-row"]}>
                   <IconButton
                     icon={<AddIcon />}
@@ -277,40 +255,30 @@ function PromptToast(props: {
                   />
                 </div>
               </div>
-
-              {/* (START) Add the file input element here */}
-              <div>
-                <label htmlFor="file-upload" className={chatStyle["input-file-label"]}>
-                  Upload Conversation History
-                </label>
-                <input
-                  type="file"
-                  id="file-upload"
-                  accept=".json"
-                  onChange={handleFileUpload}
-                  className={chatStyle["input-file"]}
-                />
-              </div>
-              {/* (END) Add the file input element here */}
-
               <div className={chatStyle["memory-prompt"]}>
                 <div className={chatStyle["memory-prompt-title"]}>
                   <span>
                     {Locale.Memory.Title} ({session.lastSummarizeIndex} of{" "}
                     {session.messages.length})
                   </span>
+
                   <label className={chatStyle["memory-prompt-action"]}>
                     {Locale.Memory.Send}
                     <input
                       type="checkbox"
                       checked={session.sendMemory}
                       onChange={() =>
-                        chatStore.updateCurrentSession((session) => (session.sendMemory = !session.sendMemory))
+                        chatStore.updateCurrentSession(
+                          (session) =>
+                            (session.sendMemory = !session.sendMemory),
+                        )
                       }
                     ></input>
                   </label>
                 </div>
-                <div className={chatStyle["memory-prompt-content"]}>{session.memoryPrompt || Locale.Memory.EmptyContent}</div>
+                <div className={chatStyle["memory-prompt-content"]}>
+                  {session.memoryPrompt || Locale.Memory.EmptyContent}
+                </div>
               </div>
             </>
           </Modal>
