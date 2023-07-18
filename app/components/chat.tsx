@@ -803,10 +803,7 @@ export function Chat() {
                     parentRef={scrollRef}
                   />
                 </div>
-                {!isUser && !message.preview && (
-                  <div className={styles["chat-message-actions"]}>
-                  </div>
-                )}
+                {!isUser && !message.preview}
               </div> 
             </div>
           );
