@@ -140,7 +140,7 @@ function PromptToast(props: {
   const chatStore = useChatStore();
   const session = chatStore.currentSession();
   const context = session.context;
-
+  
   const addContextPrompt = (prompt: Message) => {
     chatStore.updateCurrentSession((session) => {
       session.context.push(prompt);
@@ -159,6 +159,9 @@ function PromptToast(props: {
     });
   };
 
+
+
+  
   return (
     <div className={chatStyle["prompt-toast"]} key="prompt-toast">
       {props.showToast && (
@@ -238,7 +241,6 @@ function PromptToast(props: {
                     />
                   </div>
                 ))}
-
                 <div className={chatStyle["context-prompt-row"]}>
                   <IconButton
                     icon={<AddIcon />}
@@ -255,13 +257,14 @@ function PromptToast(props: {
                   />
                 </div>
               </div>
+
+
               <div className={chatStyle["memory-prompt"]}>
                 <div className={chatStyle["memory-prompt-title"]}>
                   <span>
                     {Locale.Memory.Title} ({session.lastSummarizeIndex} of{" "}
                     {session.messages.length})
                   </span>
-
                   <label className={chatStyle["memory-prompt-action"]}>
                     {Locale.Memory.Send}
                     <input
@@ -801,13 +804,9 @@ export function Chat() {
                   />
                 </div>
                 {!isUser && !message.preview && (
-                  <div className={styles["chat-message-actions"]}>
-                    <div className={styles["chat-message-action-date"]}>
-                      {message.date.toLocaleString()}
-                    </div>
-                  </div>
+
                 )}
-              </div>
+              </div> 
             </div>
           );
         })}
@@ -825,7 +824,7 @@ export function Chat() {
           <textarea
             ref={inputRef}
             className={styles["chat-input"]}
-            placeholder={Locale.Chat.Input(submitKey)}
+            placeholder="Aa"
             onInput={(e) => onInput(e.currentTarget.value)}
             value={userInput}
             onKeyDown={onInputKeyDown}
