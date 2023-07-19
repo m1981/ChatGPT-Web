@@ -745,16 +745,15 @@ export function Chat() {
               }
             >
               <div className={styles["chat-message-container"]}>
-
+                <div className={styles["chat-message-avatar"]}>
+                  <Avatar role={message.role} model={message.model} />
+                </div>
+                {showTyping && (
+                  <div className={styles["chat-message-status"]}>
+                    {Locale.Chat.Typing}
+                  </div>
+                )}
                 <div className={styles["chat-message-item"]}>
-					<div className={styles["chat-message-avatar"]}>
-					  <Avatar role={message.role} model={message.model} />
-					</div>
-					{showTyping && (
-					  <div className={styles["chat-message-status"]}>
-						{Locale.Chat.Typing}
-					  </div>
-					)}
                   {showActions && (
                     <div className={styles["chat-message-top-actions"]}>
                       {message.streaming ? (
