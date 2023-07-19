@@ -822,7 +822,7 @@ export function Chat() {
           <textarea
             ref={inputRef}
             className={styles["chat-input"]}
-            placeholder="Aa"
+            placeholder=""
             onInput={(e) => onInput(e.currentTarget.value)}
             value={userInput}
             onKeyDown={onInputKeyDown}
