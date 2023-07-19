@@ -352,10 +352,11 @@
   margin-top: 5px;
 }
 
-.user-avtar {
+.user-avtar{
   height: 30px;
   width: 30px;
-  scale: 60%;
+  transform: scale(0.6);
+  transform-origin: top left;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -363,6 +364,7 @@
   box-shadow: var(--card-shadow);
   border-radius: 10px;
 }
+
 
 .chat-message-item {
   box-sizing: border-box;
