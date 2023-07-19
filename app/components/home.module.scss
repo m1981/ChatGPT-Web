@@ -324,9 +324,8 @@
 
 .chat-message-container {
   max-width: var(--message-max-width);
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
+  display: block;
+  width: 100%;
   animation: slide-in ease 0.3s;
 
   &:hover {
@@ -368,7 +367,7 @@
   box-sizing: border-box;
   max-width: 100%;
   margin-top: 10px;
-  background-color: rgba(0, 0, 0, 0.05);
+  background-color: rgba(52, 52, 65, 0.44);
   padding: 10px;
   font-size: 14px;
   user-select: text;
