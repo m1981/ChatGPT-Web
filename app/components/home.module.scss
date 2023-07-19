@@ -324,9 +324,9 @@
 
 .chat-message-container {
   max-width: var(--message-max-width);
-  display: block;
-  width: 100%;
-  animation: slide-in ease 0.3s;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 
   &:hover {
     .chat-message-top-actions {
