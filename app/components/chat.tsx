@@ -789,18 +789,11 @@ export function Chat() {
                     </div>
                   )}
                   <Markdown
-                    content={message.content}
-                    loading={
-                      (message.preview || message.content.length === 0) &&
-                      !isUser
-                    }
-                    onContextMenu={(e) => onRightClick(e, message)}
-                    onDoubleClickCapture={() => {
-                      if (!isMobileScreen) return;
-                      setUserInput(message.content);
-                    }}
-                    fontSize={fontSize}
-                    parentRef={scrollRef}
+                      content={message.content}
+                      loading={(message.preview || message.content.length === 0) && !isUser}
+                      onContextMenu={(e) => onRightClick(e, message)}
+                      fontSize={fontSize}
+                      parentRef={scrollRef}
                   />
                 </div>
                 {!isUser && !message.preview}
