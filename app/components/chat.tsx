@@ -475,7 +475,7 @@ export function Chat() {
     () => {
       const rows = inputRef.current ? autoGrowTextArea(inputRef.current) : 1;
       const inputRows = Math.min(
-        5,
+        10,
         Math.max(2 + Number(!isMobileScreen), rows),
       );
       setInputRows(inputRows);
