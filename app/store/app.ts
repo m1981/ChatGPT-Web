@@ -144,15 +144,15 @@ const DEFAULT_CONFIG: ChatConfig = {
   fontSize: 14,
   theme: Theme.Auto as Theme,
   tightBorder: false,
-  sendPreviewBubble: true,
+  sendPreviewBubble: flase,
   sidebarWidth: 300,
 
   disablePromptHint: false,
 
   modelConfig: {
-    model: "gpt-3.5-turbo",
+    model: "gpt-4",
     temperature: 1,
-    max_tokens: 2000,
+    max_tokens: 8000,
     presence_penalty: 0,
   },
 };
