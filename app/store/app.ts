@@ -144,7 +144,7 @@ const DEFAULT_CONFIG: ChatConfig = {
   fontSize: 14,
   theme: Theme.Auto as Theme,
   tightBorder: false,
-  sendPreviewBubble: flase,
+  sendPreviewBubble: false,
   sidebarWidth: 300,
 
   disablePromptHint: false,
