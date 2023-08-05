@@ -98,8 +98,8 @@ body {
   justify-content: center;
   align-items: center;
   user-select: none;
-  font-family: "Open Sans", "SF Pro SC", "SF Pro Text", "SF Pro Icons",
-    "PingFang SC", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+  font-weight: 300;
+  font-family: "Outfit", "Helvetica", "Arial", sans-serif;
 
   @media only screen and (max-width: 600px) {
     background-color: var(--second);
