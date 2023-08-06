@@ -37,8 +37,11 @@ root{
 @mixin dark {
   --theme: dark;
 
+  --chat-send-button-color: rgb(18, 181, 229);
+  --chat-send-button-text: rgb(255, 255, 255);
+
   /* color */
-  --white: rgb(30, 30, 30);
+  --white: rgb(0, 0, 0);
   --black: rgb(187, 187, 187);
   --gray: rgb(21, 21, 21);
   --primary: rgb(29, 147, 171);

@@ -517,8 +517,8 @@
 }
 
 .chat-input-send {
-  background-color: var(--primary);
-  color: white;
+  background-color: var(--chat-send-button-color);
+  color: var(--chat-send-button-text);
   padding: 0 !important;
   position: absolute;
   right: 30px;
