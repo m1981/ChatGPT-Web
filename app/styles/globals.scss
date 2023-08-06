@@ -1,6 +1,15 @@
 root{
-  --chat-list-chat-title-font-size: 18px;
+  --base-font-size: 18px;
+  /* Chat list */
+  --app-name-font-size: calc(var(--base-font-size) * 1.5);
+  --app-headline-font-size: var(--base-font-size);
+  --chat-list-chat-title-font-size: var(--base-font-size);
+  --panel-button-font-size: var(--base-font-size);
+  /* Chat view */
+  --send-button-font-size: calc(var(--base-font-size) / 1.33);
 
+  /* Settings */
+  --settings-title: var(--base-font-size);
 }
 
 
