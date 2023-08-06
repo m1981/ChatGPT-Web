@@ -815,6 +815,7 @@ export function Chat() {
           <textarea
             ref={inputRef}
             className={styles["chat-input"]}
+            fontSize={fontSize}
             placeholder=""
             onInput={(e) => onInput(e.currentTarget.value)}
             value={userInput}
