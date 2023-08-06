@@ -519,7 +519,7 @@
 .chat-input-send {
   background-color: var(--primary);
   color: white;
-
+  padding: 0 !important;
   position: absolute;
   right: 30px;
   bottom: 32px;
