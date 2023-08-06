@@ -327,28 +327,22 @@ export function Settings() {
           </SettingItem>
 
           <SettingItem
-            title={Locale.Settings.Update.Version(currentVersion ?? "unknown")}
-            subTitle={
-              checkingUpdate
-                ? Locale.Settings.Update.IsChecking
-                : hasNewVersion
-                ? Locale.Settings.Update.FoundUpdate(remoteId ?? "ERROR")
-                : Locale.Settings.Update.IsLatest
-            }
+            title={Locale.Settings.FontSize.Title}
+            subTitle={Locale.Settings.FontSize.SubTitle}
           >
-            {checkingUpdate ? (
-              <div />
-            ) : hasNewVersion ? (
-              <Link href={UPDATE_URL} target="_blank" className="link">
-                {Locale.Settings.Update.GoToUpdate}
-              </Link>
-            ) : (
-              <IconButton
-                icon={<ResetIcon></ResetIcon>}
-                text={Locale.Settings.Update.CheckUpdate}
-                onClick={() => checkUpdate(true)}
-              />
-            )}
+            <InputRange
+              title={`${config.fontSize ?? 14}px`}
+              value={config.fontSize}
+              min="12"
+              max="26"
+              step="1"
+              onChange={(e) =>
+                updateConfig(
+                  (config) =>
+                    (config.fontSize = Number.parseInt(e.currentTarget.value)),
+                )
+              }
+            ></InputRange>
           </SettingItem>
 
           <SettingItem title={Locale.Settings.SendKey}>
@@ -404,24 +398,7 @@ export function Settings() {
             </select>
           </SettingItem>
 
-          <SettingItem
-            title={Locale.Settings.FontSize.Title}
-            subTitle={Locale.Settings.FontSize.SubTitle}
-          >
-            <InputRange
-              title={`${config.fontSize ?? 14}px`}
-              value={config.fontSize}
-              min="12"
-              max="26"
-              step="1"
-              onChange={(e) =>
-                updateConfig(
-                  (config) =>
-                    (config.fontSize = Number.parseInt(e.currentTarget.value)),
-                )
-              }
-            ></InputRange>
-          </SettingItem>
+
 
           <SettingItem title={Locale.Settings.TightBorder}>
             <input
