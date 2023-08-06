@@ -152,7 +152,7 @@ const DEFAULT_CONFIG: ChatConfig = {
   modelConfig: {
     model: "gpt-4",
     temperature: 1,
-    max_tokens: 8000,
+    max_tokens: 32000,
     presence_penalty: 0,
   },
 };
