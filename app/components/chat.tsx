@@ -823,7 +823,6 @@ export function Chat() {
             rows={inputRows}
           />
           <IconButton
-            icon={<SendWhiteIcon />}
             text={Locale.Chat.Send}
             className={styles["chat-input-send"]}
             noDark
