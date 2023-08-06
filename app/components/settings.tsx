@@ -513,8 +513,8 @@ export function Settings() {
             <InputRange
               title={config.historyMessageCount.toString()}
               value={config.historyMessageCount}
-              min="0"
-              max="25"
+              min="5"
+              max="50"
               step="1"
               onChange={(e) =>
                 updateConfig(
