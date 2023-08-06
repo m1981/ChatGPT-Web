@@ -166,7 +166,7 @@
 }
 
 .chat-item-title {
-  font-size: 14px;
+  font-size: var(--chat-list-chat-title-font-size);
   font-weight: bolder;
   display: block;
   width: 95%;
