@@ -380,7 +380,7 @@ export function ChatActions(props: {
     const nextTheme = themes[nextIndex];
 
     // State before update
-    console.log("State before update: ", chatStore.getState());
+    console.log("State before update: ", chatStore.config);
 
     chatStore.updateConfig(config => {
       console.log("Old Config: ", config);
@@ -388,8 +388,9 @@ export function ChatActions(props: {
     });
 
     // State after update
-    console.log("State after update: ", chatStore.getState());
+    console.log("State after update: ", chatStore.config);
   }
+
 
 
   // stop all responses
