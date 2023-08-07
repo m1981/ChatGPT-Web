@@ -377,9 +377,11 @@ export function ChatActions(props: {
     const themeIndex = themes.indexOf(theme);
     const nextIndex = (themeIndex + 1) % themes.length;
     const nextTheme = themes[nextIndex];
-    chatStore.updateConfig((config) => {
-          return { ...config, theme: nextTheme };
-      });
+    console.log('chatStore before update:', chatStore); // add this line
+    chatStore.updateConfig(config => ({...config, theme: nextTheme}));
+    console.log('chatStore after update:', chatStore); // and this line
+  }
+
 
   }
 
