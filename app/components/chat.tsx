@@ -377,7 +377,10 @@ export function ChatActions(props: {
     const themeIndex = themes.indexOf(theme);
     const nextIndex = (themeIndex + 1) % themes.length;
     const nextTheme = themes[nextIndex];
-    chatStore.updateConfig((config) => (config.theme = nextTheme));
+    chatStore.updateConfig((config) => {
+          return { ...config, theme: nextTheme };
+      });
+
   }
 
   // stop all responses
