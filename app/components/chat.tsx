@@ -378,10 +378,19 @@ export function ChatActions(props: {
     const themeIndex = themes.indexOf(theme);
     const nextIndex = (themeIndex + 1) % themes.length;
     const nextTheme = themes[nextIndex];
-    console.log('chatStore before update:', chatStore); // add this line
-    chatStore.updateConfig(config => ({...config, theme: nextTheme}));
-    console.log('chatStore after update:', chatStore); // and this line
+
+    // State before update
+    console.log("State before update: ", chatStore.getState());
+
+    chatStore.updateConfig(config => {
+      console.log("Old Config: ", config);
+      return ({ ...config, theme: nextTheme });
+    });
+
+    // State after update
+    console.log("State after update: ", chatStore.getState());
   }
+
 
   // stop all responses
   const couldStop = ControllerPool.hasPending();
