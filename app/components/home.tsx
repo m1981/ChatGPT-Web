@@ -144,11 +144,13 @@ export function Home() {
   useSwitchTheme();
 
   // Clear local and session storage every time the app loads
+  /*
   useEffect(() => {
     localStorage.clear();
     sessionStorage.clear();
     window.location.reload();
   }, []);
+  */
 
   // Display the Loading component until the app is hydrated
   if (!useHasHydrated()) {
