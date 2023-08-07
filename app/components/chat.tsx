@@ -372,6 +372,7 @@ export function ChatActions(props: {
 
   // switch themes
   const theme = chatStore.config.theme;
+
   function nextTheme() {
     const themes = [Theme.Auto, Theme.Light, Theme.Dark];
     const themeIndex = themes.indexOf(theme);
@@ -380,9 +381,6 @@ export function ChatActions(props: {
     console.log('chatStore before update:', chatStore); // add this line
     chatStore.updateConfig(config => ({...config, theme: nextTheme}));
     console.log('chatStore after update:', chatStore); // and this line
-  }
-
-
   }
 
   // stop all responses
