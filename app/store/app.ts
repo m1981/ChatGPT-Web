@@ -264,8 +264,8 @@ export const useChatStore = create<ChatStore>()(
 
       updateConfig(updater) {
         const config = get().config;
-        updater(config);
-        set(() => ({ config }));
+        const newConfig = updater({ ...config });
+        set(() => ({ config: newConfig }));
       },
 
       selectSession(index: number) {
