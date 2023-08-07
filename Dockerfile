@@ -1,73 +1,12 @@
-FROM node:18-alpine AS base
+FROM node:18
+WORKDIR /usr/src/app
 
-FROM base AS deps
+# Install app dependencies to a directory that's not going to be overwritten by docker volume mount
+RUN npm install typescript glob
 
-RUN apk add --no-cache libc6-compat
-
-WORKDIR /app
-
-COPY package.json yarn.lock ./
-
-RUN yarn config set registry 'https://registry.npm.taobao.org'
-RUN yarn install
-
-FROM base AS builder
-
-RUN apk update && apk add --no-cache git
-
-ENV OPENAI_API_KEY=""
-ENV CODE=""
+# set an environment variable for node_modules
+ENV NODE_PATH=/usr/src/app/node_modules
 
 WORKDIR /app
-COPY --from=deps /app/node_modules ./node_modules
-COPY . .
 
-RUN yarn build
-
-# Development
-FROM base AS dev
-
-WORKDIR /app
-COPY --from=deps /app/node_modules ./node_modules
-COPY . .
-
-ENV PATH /app/node_modules/.bin:$PATH
-
-EXPOSE 3000
-
-CMD ["yarn", "dev"]
-
-
-# Runner stage
-FROM base AS runner
-
-RUN apk add proxychains-ng
-
-ENV PROXY_URL=""
-ENV OPENAI_API_KEY=""
-ENV CODE=""
-
-COPY --from=builder /app/public ./public
-COPY --from=builder /app/.next/standalone ./
-COPY --from=builder /app/.next/static ./.next/static
-COPY --from=builder /app/.next/server ./.next/server
-
-EXPOSE 3000
-
-CMD if [ -n "$PROXY_URL" ]; then \
-        protocol=$(echo $PROXY_URL | cut -d: -f1); \
-        host=$(echo $PROXY_URL | cut -d/ -f3 | cut -d: -f1); \
-        port=$(echo $PROXY_URL | cut -d: -f3); \
-        conf=/etc/proxychains.conf; \
-        echo "strict_chain" > $conf; \
-        echo "proxy_dns" >> $conf; \
-        echo "remote_dns_subnet 224" >> $conf; \
-        echo "tcp_read_time_out 15000" >> $conf; \
-        echo "tcp_connect_time_out 8000" >> $conf; \
-        echo "[ProxyList]" >> $conf; \
-        echo "$protocol $host $port" >> $conf; \
-        cat /etc/proxychains.conf; \
-        proxychains -f $conf node server.js; \
-    else \
-        node server.js; \
-    fi
+CMD ["node", "gen-docs.js"]
