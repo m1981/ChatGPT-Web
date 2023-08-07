@@ -39,7 +39,6 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.googleapis.com"></link>
         <link rel="preconnect" href="https://fonts.gstatic.com"></link>
         <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400&display=swap&family=Outfit:wght@100;200;300;400&display=swap" rel="stylesheet"></link>
-        <script src="/serviceWorkerRegister.js" defer></script>
       </head>
       <body>{children}</body>
     </html>
