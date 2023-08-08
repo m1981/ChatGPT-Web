@@ -375,11 +375,12 @@ export function ChatActions(props: {
 
   function nextTheme() {
     const themes = [Theme.Auto, Theme.Light, Theme.Dark];
-    const themeIndex = themes.indexOf(theme);
-    const nextIndex = (themeIndex + 1) % themes.length;
+    let themeIndex = themes.indexOf(theme);
+    let nextIndex = (themeIndex + 1) % themes.length;
     const nextTheme = themes[nextIndex];
-    chatStore.updateConfig(config => {
-      return {...config, theme: nextTheme}
+
+    chatStore.updateConfig((config) => {
+      return { ...config, theme: nextTheme };
     });
   }
 
