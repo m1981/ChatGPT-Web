@@ -15,6 +15,10 @@ root{
 
 @mixin light {
   --theme: light;
+  --chat-user-color: white;
+  --chat-user-bg: rgb(125, 67, 247);
+  --chat-ai-color: black;
+  --chat-ai-bg: rgb(241, 241, 241);
 
   /* color */
   --white: white;
@@ -36,6 +40,11 @@ root{
 
 @mixin dark {
   --theme: dark;
+
+  --chat-user-color: white;
+  --chat-user-bg: rgb(52, 52, 65);
+  --chat-ai-color: white;
+  --chat-ai-bg: rgb(23, 23, 29);
 
   --chat-send-button-color: rgb(18, 181, 229);
   --chat-send-button-text: rgb(255, 255, 255);
@@ -117,7 +126,7 @@ body {
   align-items: center;
   user-select: none;
   font-weight: 300;
-  font-family: "Outfit", "Helvetica", "Arial", sans-serif;
+  font-family: "Opens Sans", "Helvetica", "Arial", sans-serif;
 
   @media only screen and (max-width: 600px) {
     background-color: var(--second);

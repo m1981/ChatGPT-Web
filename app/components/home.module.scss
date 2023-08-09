@@ -371,7 +371,8 @@
   box-sizing: border-box;
   max-width: 100%;
   margin-top: 0;
-  background-color: rgba(52, 52, 65, 0.44);
+  color: var(--chat-ai-color);
+  background-color: var(--chat-ai-bg);
   padding: 6px;
   font-size: 14px;
   user-select: text;
@@ -411,7 +412,8 @@
 }
 
 .chat-message-user > .chat-message-container > .chat-message-item {
-  background-color: var(--second);
+  color: var(--chat-user-color);
+  background-color: var(--chat-user-bg);
 }
 
 .chat-message-actions {
