@@ -51,11 +51,6 @@ const Settings = dynamic(async () => (await import("./settings")).Settings, {
   loading: () => <Loading noLogo />,
 });
 
-// Dynamically import SideBar component with a loading indicator
-const SideBar = dynamic(async () => (await import("./sidebar")).SideBar, {
-  loading: () => <Loading noLogo />,
-});
-
 // Custom hook to switch the theme of the application
 export function useSwitchTheme() {
   const config = useAppConfig();
