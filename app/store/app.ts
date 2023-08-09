@@ -265,7 +265,12 @@ export const useChatStore = create<ChatStore>()(
       updateConfig(updater) {
         const currentConfig = get().config;
         const updatedConfig = updater(currentConfig);
-        set({ config: { ...updatedConfig } });
+
+        if (typeof updatedConfig === 'object' && updatedConfig !== null) {
+          set({ config: { ...updatedConfig } });
+        } else {
+          // Handle the error or fallback scenario here
+        }
       },
 
       selectSession(index: number) {

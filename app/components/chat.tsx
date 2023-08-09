@@ -375,14 +375,15 @@ export function ChatActions(props: {
 
   function nextTheme() {
     const themes = [Theme.Auto, Theme.Light, Theme.Dark];
-    let themeIndex = themes.indexOf(theme);
-    let nextIndex = (themeIndex + 1) % themes.length;
+    const themeIndex = themes.indexOf(theme);
+    const nextIndex = (themeIndex + 1) % themes.length;
     const nextTheme = themes[nextIndex];
 
     chatStore.updateConfig((config) => {
-      return { ...config, theme: nextTheme };
+      return { ...config, theme: nextTheme }; // Ensure this returns an object
     });
   }
+
 
   // stop all responses
   const couldStop = ControllerPool.hasPending();
