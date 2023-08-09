@@ -379,7 +379,7 @@ export function ChatActions(props: {
     const nextIndex = (themeIndex + 1) % themes.length;
     const nextTheme = themes[nextIndex];
 
-    config.update((config) => (config.theme = nextTheme));
+    chatStore.update((config) => (config.theme = nextTheme));
   }
 
 
@@ -433,6 +433,7 @@ export function ChatActions(props: {
 export function Chat() {
   type RenderMessage = Message & { preview?: boolean };
 
+  const config = useChatStore((state) => state.config);
   const chatStore = useChatStore();
   const [session, sessionIndex] = useChatStore((state) => [
     state.currentSession(),
@@ -593,7 +594,6 @@ export function Chat() {
     inputRef.current?.focus();
   };
 
-  const config = useChatStore((state) => state.config);
 
   const context: RenderMessage[] = session.context.slice();
 
