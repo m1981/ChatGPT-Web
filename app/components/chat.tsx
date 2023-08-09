@@ -132,7 +132,6 @@ function exportMessages(messages: Message[], topic: string) {
   });
 }
 
-
 function PromptToast(props: {
   showToast?: boolean;
   showModal?: boolean;
@@ -141,7 +140,7 @@ function PromptToast(props: {
   const chatStore = useChatStore();
   const session = chatStore.currentSession();
   const context = session.context;
-  
+
   const addContextPrompt = (prompt: Message) => {
     chatStore.updateCurrentSession((session) => {
       session.context.push(prompt);
@@ -160,9 +159,6 @@ function PromptToast(props: {
     });
   };
 
-
-
-  
   return (
     <div className={chatStyle["prompt-toast"]} key="prompt-toast">
       {props.showToast && (
@@ -242,6 +238,7 @@ function PromptToast(props: {
                     />
                   </div>
                 ))}
+
                 <div className={chatStyle["context-prompt-row"]}>
                   <IconButton
                     icon={<AddIcon />}
@@ -258,14 +255,13 @@ function PromptToast(props: {
                   />
                 </div>
               </div>
-
-
               <div className={chatStyle["memory-prompt"]}>
                 <div className={chatStyle["memory-prompt-title"]}>
                   <span>
                     {Locale.Memory.Title} ({session.lastSummarizeIndex} of{" "}
                     {session.messages.length})
                   </span>
+
                   <label className={chatStyle["memory-prompt-action"]}>
                     {Locale.Memory.Send}
                     <input
@@ -373,16 +369,13 @@ export function ChatActions(props: {
 
   // switch themes
   const theme = config.theme;
-
   function nextTheme() {
     const themes = [Theme.Auto, Theme.Light, Theme.Dark];
     const themeIndex = themes.indexOf(theme);
     const nextIndex = (themeIndex + 1) % themes.length;
     const nextTheme = themes[nextIndex];
-
     config.update((config) => (config.theme = nextTheme));
   }
-
 
   // stop all responses
   const couldStop = ControllerPool.hasPending();
@@ -434,7 +427,6 @@ export function ChatActions(props: {
 export function Chat() {
   type RenderMessage = Message & { preview?: boolean };
 
-  const config = useChatStore((state) => state.config);
   const chatStore = useChatStore();
   const [session, sessionIndex] = useChatStore((state) => [
     state.currentSession(),
@@ -596,7 +588,6 @@ export function Chat() {
     inputRef.current?.focus();
   };
 
-
   const context: RenderMessage[] = session.context.slice();
 
   const accessStore = useAccessStore();
@@ -681,7 +672,6 @@ export function Chat() {
               onClick={() => navigate(Path.Home)}
             />
           </div>
-
           <div className={styles["window-action-button"]}>
             <IconButton
               icon={<ExportIcon />}
@@ -788,19 +778,22 @@ export function Chat() {
                     </div>
                   )}
                   <Markdown
-                      content={message.content}
-                      loading={(message.preview || message.content.length === 0) && !isUser}
-                      onContextMenu={(e) => onRightClick(e, message)}
-                      fontSize={fontSize}
-                      parentRef={scrollRef}
+                    content={message.content}
+                    loading={
+                      (message.preview || message.content.length === 0) &&
+                      !isUser
+                    }
+                    onContextMenu={(e) => onRightClick(e, message)}
+                    fontSize={fontSize}
+                    parentRef={scrollRef}
                   />
                 </div>
                 {!isUser && !message.preview}
-              </div> 
-            </div>
+                    </div>
+                  </div>
           );
         })}
-      </div>
+              </div>
 
       <div className={styles["chat-input-panel"]}>
         <PromptHints prompts={promptHints} onPromptSelect={onPromptSelect} />
