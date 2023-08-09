@@ -30,7 +30,7 @@ const DEFAULT_CONFIG = {
   disablePromptHint: false,
 
   modelConfig: {
-    model: "gpt-4",
+    model: "gpt-4" as ModelType,
     temperature: 1,
     max_tokens: 32000,
     presence_penalty: 0,
