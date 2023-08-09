@@ -379,7 +379,7 @@ export function ChatActions(props: {
     const nextIndex = (themeIndex + 1) % themes.length;
     const nextTheme = themes[nextIndex];
 
-    chatStore.update((config) => (config.theme = nextTheme));
+    chatStore.updateConfig((config) => (config.theme = nextTheme));
   }
 
 

@@ -262,7 +262,7 @@ export const useChatStore = create<ChatStore>()(
         return get().config;
       },
 
-      update(updater) {
+      updateConfig(updater) {
         const config = { ...get() };
         updater(config);
         set(() => config);
