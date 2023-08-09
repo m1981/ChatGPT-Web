@@ -17,11 +17,11 @@ including the sidebar and the appropriate routes for different pages like Home, 
 // Imports and polyfills
 "use client";
 require("../polyfill");
-import { useState, useEffect } from "react";
+import { useState, useEffect, StyleHTMLAttributes } from "react";
 import styles from "./home.module.scss";
 import BotIcon from "../icons/bot.svg";
 import LoadingIcon from "../icons/three-dots.svg";
-import { useChatStore } from "../store";
+
 import { getCSSVar, useMobileScreen } from "../utils";
 import { Chat } from "./chat";
 import dynamic from "next/dynamic";
