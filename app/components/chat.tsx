@@ -32,6 +32,7 @@ import {
   useAccessStore,
   Theme,
   ModelType,
+  useAppConfig,
 } from "../store";
 
 import {
@@ -69,7 +70,7 @@ const Emoji = dynamic(async () => (await import("emoji-picker-react")).Emoji, {
 });
 
 export function Avatar(props: { role: Message["role"]; model?: ModelType }) {
-  const config = useChatStore((state) => state.config);
+  const config = useAppConfig();
 
   if (props.role !== "user") {
     return (
@@ -292,7 +293,7 @@ function PromptToast(props: {
 }
 
 function useSubmitHandler() {
-  const config = useChatStore((state) => state.config);
+  const config = useAppConfig();
   const submitKey = config.submitKey;
 
   const shouldSubmit = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
@@ -368,10 +369,10 @@ export function ChatActions(props: {
   scrollToBottom: () => void;
   hitBottom: boolean;
 }) {
-  const chatStore = useChatStore();
+  const config = useAppConfig();
 
   // switch themes
-  const theme = chatStore.config.theme;
+  const theme = config.theme;
 
   function nextTheme() {
     const themes = [Theme.Auto, Theme.Light, Theme.Dark];
@@ -379,7 +380,7 @@ export function ChatActions(props: {
     const nextIndex = (themeIndex + 1) % themes.length;
     const nextTheme = themes[nextIndex];
 
-    chatStore.updateConfig((config) => (config.theme = nextTheme));
+    config.update((config) => (config.theme = nextTheme));
   }
 
 
@@ -439,7 +440,8 @@ export function Chat() {
     state.currentSession(),
     state.currentSessionIndex,
   ]);
-  const fontSize = useChatStore((state) => state.config.fontSize);
+  const config = useAppConfig();
+  const fontSize = config.fontSize;
 
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const [userInput, setUserInput] = useState("");
@@ -503,7 +505,7 @@ export function Chat() {
     // clear search results
     if (n === 0) {
       setPromptHints([]);
-    } else if (!chatStore.config.disablePromptHint && n < SEARCH_TEXT_LIMIT) {
+    } else if (!config.disablePromptHint && n < SEARCH_TEXT_LIMIT) {
       // check if need to trigger auto completion
       if (text.startsWith("/")) {
         let searchText = text.slice(1);
@@ -696,10 +698,10 @@ export function Chat() {
           {!isMobileScreen && (
             <div className={styles["window-action-button"]}>
               <IconButton
-                icon={chatStore.config.tightBorder ? <MinIcon /> : <MaxIcon />}
+                icon={config.tightBorder ? <MinIcon /> : <MaxIcon />}
                 bordered
                 onClick={() => {
-                  chatStore.updateConfig(
+                  config.update(
                     (config) => (config.tightBorder = !config.tightBorder),
                   );
                 }}

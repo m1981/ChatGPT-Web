@@ -33,6 +33,8 @@ import {
   Route,
   useLocation,
 } from "react-router-dom";
+import { SideBar } from "./sidebar";
+import { useAppConfig } from "../store/config";
 
 // Loading component, displays a loading icon and an optional logo
 export function Loading(props: { noLogo?: boolean }) {
@@ -56,7 +58,7 @@ const SideBar = dynamic(async () => (await import("./sidebar")).SideBar, {
 
 // Custom hook to switch the theme of the application
 export function useSwitchTheme() {
-  const config = useChatStore((state) => state.config);
+  const config = useAppConfig();
 
   useEffect(() => {
     document.body.classList.remove("light");
@@ -99,7 +101,7 @@ const useHasHydrated = () => {
 
 // WideScreen component for non-mobile screens, renders SideBar and the Routes
 function WideScreen() {
-  const config = useChatStore((state) => state.config);
+  const config = useAppConfig();
 
   return (
     <div
