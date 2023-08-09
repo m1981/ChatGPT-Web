@@ -379,9 +379,7 @@ export function ChatActions(props: {
     const nextIndex = (themeIndex + 1) % themes.length;
     const nextTheme = themes[nextIndex];
 
-    chatStore.updateConfig((config) => {
-      return { ...config, theme: nextTheme }; // Ensure this returns an object
-    });
+    config.update((config) => (config.theme = nextTheme));
   }
 
 
