@@ -33,93 +33,6 @@ export function createMessage(override: Partial<Message>): Message {
 
 export const ROLES: Message["role"][] = ["system", "user", "assistant"];
 
-const ENABLE_GPT4 = true;
-
-export const ALL_MODELS = [
-  {
-    name: "gpt-4",
-    available: ENABLE_GPT4,
-  },
-  {
-    name: "gpt-4-0314",
-    available: ENABLE_GPT4,
-  },
-  {
-    name: "gpt-4-32k",
-    available: ENABLE_GPT4,
-  },
-  {
-    name: "gpt-4-32k-0314",
-    available: ENABLE_GPT4,
-  },
-  {
-    name: "gpt-3.5-turbo",
-    available: true,
-  },
-  {
-    name: "gpt-3.5-turbo-0301",
-    available: true,
-  },
-] as const;
-
-export type ModelType = (typeof ALL_MODELS)[number]["name"];
-
-export function limitNumber(
-  x: number,
-  min: number,
-  max: number,
-  defaultValue: number,
-) {
-  if (typeof x !== "number" || isNaN(x)) {
-    return defaultValue;
-  }
-
-  return Math.min(max, Math.max(min, x));
-}
-
-export function limitModel(name: string) {
-  return ALL_MODELS.some((m) => m.name === name && m.available)
-    ? name
-    : ALL_MODELS[4].name;
-}
-
-export const ModalConfigValidator = {
-  model(x: string) {
-    return limitModel(x) as ModelType;
-  },
-  max_tokens(x: number) {
-    return limitNumber(x, 0, 32000, 2000);
-  },
-  presence_penalty(x: number) {
-    return limitNumber(x, -2, 2, 0);
-  },
-  temperature(x: number) {
-    return limitNumber(x, 0, 2, 1);
-  },
-};
-
-const DEFAULT_CONFIG: ChatConfig = {
-  historyMessageCount: 50,
-  compressMessageLengthThreshold: 8000,
-  sendBotMessages: true as boolean,
-  submitKey: SubmitKey.CtrlEnter as SubmitKey,
-  avatar: "1f603",
-  fontSize: 18,
-  theme: Theme.Dark as Theme,
-  tightBorder: false,
-  sendPreviewBubble: false,
-  sidebarWidth: 300,
-
-  disablePromptHint: false,
-
-  modelConfig: {
-    model: "gpt-4",
-    temperature: 1,
-    max_tokens: 32000,
-    presence_penalty: 0,
-  },
-};
-
 export interface ChatStat {
   tokenCount: number;
   wordCount: number;
@@ -525,6 +438,7 @@ export const useChatStore = create<ChatStore>()(
             }),
             {
               filterBot: false,
+              model: "gpt-3.5-turbo",
               onMessage(message, done) {
                 session.memoryPrompt = message;
                 if (done) {
