@@ -7,7 +7,7 @@ like selecting, deleting, and moving sessions.
  */
 
 // Import the DeleteIcon SVG component, styles and necessary libraries
-import DeleteIcon from "../icons/delete.svg";
+import DeleteIcon from "../icons/delete2.svg";
 import styles from "./home.module.scss";
 import {
   DragDropContext,
