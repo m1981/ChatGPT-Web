@@ -16,8 +16,8 @@ export enum Theme {
 }
 
 const DEFAULT_CONFIG = {
-  historyMessageCount: 50,
-  compressMessageLengthThreshold: 8000,
+  historyMessageCount: 250,
+  compressMessageLengthThreshold: 128000,
   sendBotMessages: true as boolean,
   submitKey: SubmitKey.CtrlEnter as SubmitKey,
   avatar: "1f603",
@@ -30,9 +30,9 @@ const DEFAULT_CONFIG = {
   disablePromptHint: false,
 
   modelConfig: {
-    model: "gpt-4" as ModelType,
+    model: "gpt-4-1106-preview"  as ModelType,
     temperature: 1,
-    max_tokens: 32000,
+    max_tokens: 128000,
     presence_penalty: 0,
   },
 };
@@ -54,7 +54,7 @@ export const ALL_MODELS = [
     available: ENABLE_GPT4,
   },
   {
-    name: "gpt-4-0314",
+    name: "gpt-4-1106-preview",
     available: ENABLE_GPT4,
   },
   {
