@@ -5,14 +5,15 @@
   "license": "Anti 996",
   "scripts": {
     "dev": "yarn fetch && next dev",
-    "vercel-build": "yarn test && next build",
     "build": "yarn fetch && next build",
+    "vercel-build": "yarn fetch && yarn test:ci && next build",
     "start": "next start",
     "lint": "next lint",
     "fetch": "true",
     "prepare": "husky install",
     "proxy-dev": "sh ./scripts/init-proxy.sh && proxychains -f ./scripts/proxychains.conf yarn dev",
-    "test": "jest --ci --no-cache"
+    "test": "jest",
+    "test:ci": "jest --ci --no-cache"
   },
   "dependencies": {
     "@hello-pangea/dnd": "^16.2.0",

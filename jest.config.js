@@ -1,36 +1,20 @@
-module.exports = {
-  // Automatically clear mock calls, instances and results before every test
-  clearMocks: true,
+const nextJest = require('next/jest')
 
-  // The directory where Jest should output its coverage files
-  coverageDirectory: "coverage",
+// Provide the path to your Next.js app to load next.config.js and .env files in your test environment
+const createJestConfig = nextJest({
+  dir: './',
+})
 
-  // The test environment that will be used for testing
-  testEnvironment: "jest-environment-jsdom",
-
-  // An array of file extensions your modules use
-  moduleFileExtensions: ["js", "jsx", "ts", "tsx"],
-
-  // The glob patterns Jest uses to detect test files
-  testMatch: [
-    "<rootDir>/__tests__/**/*.(spec|test).(ts|tsx|js|jsx)"
-  ],
-
-  // Path to a file which will be executed before starting the test run
-  setupFilesAfterEnv: ["<rootDir>/jest.setup.js"],
-
-  // A map from regular expressions to paths to transformers
-  transform: {
-    "^.+\\.(js|jsx|ts|tsx)$": "babel-jest",
-    "\\.(css|less|sass|scss)$": "identity-obj-proxy",
-  },
-
-  // Module file extensions for importing
-  moduleFileExtensions: ['js', 'jsx', 'ts', 'tsx'],
-  
-  // A map from regular expressions to module names or to arrays of module names
-  // that allow to stub out resources with a single module
+// Add any custom config to be passed to Jest
+const customJestConfig = {
+  setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
+  testEnvironment: 'jest-environment-jsdom',
   moduleNameMapper: {
     '\\.svg$': '<rootDir>/__mocks__/svgrMock.js',
-  }
-};
+  },
+  // Add other configurations that are specific to your project
+  // ...
+}
+
+// createJestConfig is exported this way to ensure that next/jest can load the Next.js config which is async
+module.exports = createJestConfig(customJestConfig)
