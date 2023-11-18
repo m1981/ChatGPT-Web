@@ -13,7 +13,7 @@
     "prepare": "husky install",
     "proxy-dev": "sh ./scripts/init-proxy.sh && proxychains -f ./scripts/proxychains.conf yarn dev",
     "test": "jest",
-    "test:ci": "jest --ci --no-cache"
+    "test:ci": "NODE_ENV=test jest --ci --no-cache"
   },
   "dependencies": {
     "@hello-pangea/dnd": "^16.2.0",
