@@ -1,5 +1,5 @@
-// __mocks__/svgMock.js
-import * as React from 'react';
+// __mocks__/svgrMock.js
+import React from 'react';
 
-const SvgMock = () => <svg />;
-export default SvgMock;
+const SvgrMock = () => <svg />;
+export default SvgrMock;
