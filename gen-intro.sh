@@ -70,6 +70,5 @@ echo "Function declarations  and usage of useEffect and useState locations" >> i
 echo "Function declarations  and usage of useEffect and useState locations" >> intro-for-gpt.txt
 echo "Function declarations  and usage of useEffect and useState locations" >> intro-for-gpt.txt
 echo '```' >> intro-for-gpt.txt
-find . -type f \( -name "*.ts" -o -name "*.t
-sx" \) -exec grep -HnE 'function|useEffect|useState' {} + | grep -vE '//.*function|//.*useEffect|//.*useState' >> intro-for-gpt.txt
+find . -type f \( -name "*.ts" -o -name "*.tsx" \) -exec grep -HnE 'function|useEffect|useState' {} + | grep -vE '//.*function|//.*useEffect|//.*useState' >> intro-for-gpt.txt
 echo '```' >> intro-for-gpt.txt
