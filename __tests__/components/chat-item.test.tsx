@@ -3,7 +3,7 @@
 import React from 'react';
 import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { ChatItem } from './ChatItem';
+import { ChatItem } from '../../app/components/chat-list';
 
 describe('ChatItem Component', () => {
   // Define a basic mock function for click and delete handlers
