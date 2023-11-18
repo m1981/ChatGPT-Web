@@ -58,12 +58,15 @@ export function ChatItem(props: {
           )}
 
           {/* Render the delete button */}
-          <div className={styles["chat-item-delete"]} onClick={(e) => {
-            e.stopPropagation();
-            props.onDelete?.();
-          }}>
-            <DeleteIcon data-testid="delete-icon" />
-          </div>
+{/* Rest of the ChatItem component code */}
+{/* Commenting out DeleteIcon to isolate the issue */}
+{/* <div className={styles["chat-item-delete"]} onClick={(e) => {
+      e.stopPropagation();
+      props.onDelete?.();
+}}>
+  <DeleteIcon data-testid="delete-icon" />
+</div> */}
+
         </div>
       )}
     </Draggable>

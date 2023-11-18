@@ -1,6 +1,7 @@
 // __mocks__/svgrMock.js
-const React = require('react');
+import React from 'react';
 
-module.exports = 'svg';
-// or if there's JSX processing set up
-// module.exports = () => <svg />;
+// This creates a simple SVG mock that Jest can use in place of your actual SVG files
+export default function SvgrMock(props) {
+  return <svg {...props} />;
+}
