@@ -1,9 +1,15 @@
 // ChatItem.test.tsx
 
 import React from 'react';
-import { render, screen, within } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ChatItem } from '../../app/components/chat-list';
+import { DragDropContext } from '@hello-pangea/dnd';
+
+// Mocked DragDropContext for providing the necessary context
+const MockDragDropContextProvider = ({ children }) => (
+  <DragDropContext onDragEnd={() => {}}>{children}</DragDropContext>
+);
 
 describe('ChatItem Component', () => {
   // Define a basic mock function for click and delete handlers
@@ -23,32 +29,43 @@ describe('ChatItem Component', () => {
   };
 
   it('renders ChatItem with the correct content', () => {
-    render(<ChatItem {...props} />);
+    render(
+      <MockDragDropContextProvider>
+        <ChatItem {...props} data-testid="chat-item" />
+      </MockDragDropContextProvider>
+    );
 
     // Check if the title is present
     expect(screen.getByText(props.title)).toBeInTheDocument();
 
-    // The delete button icon should be in the document (assuming it's an SVG with a title "Delete")
-    expect(screen.getByTitle('Delete')).toBeInTheDocument();
+    // Assuming DeleteIcon renders an SVG with a title="Delete", which might not be the case
+    // If this doesn't work, you may need a data-testid or alternative method to select the delete icon
+    expect(screen.getByTestId('delete-icon')).toBeInTheDocument();
   });
 
   it('calls onClick prop when ChatItem is clicked', () => {
-    render(<ChatItem {...props} />);
+    render(
+      <MockDragDropContextProvider>
+        <ChatItem {...props} data-testid="chat-item" />
+      </MockDragDropContextProvider>
+    );
 
-    // Find the ChatItem using role or testId and click it
-    const chatItem = screen.getByTestId('chat-item');
-    userEvent.click(chatItem);
+    // Trigger a click event on the ChatItem
+    userEvent.click(screen.getByTestId('chat-item'));
 
     // Check if the mockOnClick was called
     expect(mockOnClick).toHaveBeenCalledTimes(1);
   });
 
   it('calls onDelete prop when delete icon is clicked', () => {
-    render(<ChatItem {...props} />);
+    render(
+      <MockDragDropContextProvider>
+        <ChatItem {...props} data-testid="chat-item" />
+      </MockDragDropContextProvider>
+    );
 
-    // Click the delete button (you may need to find the button via role or testid depending on your setup)
-    const deleteButton = screen.getByTitle('Delete');
-    userEvent.click(deleteButton);
+    // Click the delete button by testId
+    userEvent.click(screen.getByTestId('delete-icon'));
 
     // Stop propagation must be called to prevent the onClick of the parent chat item from being called
     expect(mockOnDelete).toHaveBeenCalledTimes(1);
@@ -56,16 +73,23 @@ describe('ChatItem Component', () => {
 
   it('applies selected styles when ChatItem is selected', () => {
     const selectedProps = { ...props, selected: true };
-    const { rerender } = render(<ChatItem {...selectedProps} />);
+    render(
+      <MockDragDropContextProvider>
+        <ChatItem {...selectedProps} data-testid="chat-item" />
+      </MockDragDropContextProvider>
+    );
 
-    // Find the ChatItem using role or testId and check for selected styles
-    const chatItem = screen.getByTestId('chat-item');
-    expect(chatItem).toHaveClass('chat-item-selected');
+    // Check if the ChatItem has the 'selected' class
+    expect(screen.getByTestId('chat-item')).toHaveClass('chat-item-selected');
 
-    // Rerender it with selected as false
-    rerender(<ChatItem {...props} />);
+    // Rerender with selected as false
+    render(
+      <MockDragDropContextProvider>
+        <ChatItem {...props} data-testid="chat-item" />
+      </MockDragDropContextProvider>
+    );
 
     // Expect the selected class to be removed
-    expect(chatItem).not.toHaveClass('chat-item-selected');
+    expect(screen.getByTestId('chat-item')).not.toHaveClass('chat-item-selected');
   });
 });

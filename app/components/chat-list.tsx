@@ -60,7 +60,7 @@ export function ChatItem(props: {
 
           {/* Render the delete button */}
           <div className={styles["chat-item-delete"]} onClick={props.onDelete}>
-            <DeleteIcon />
+            <DeleteIcon data-testid="delete-icon" />
           </div>
         </div>
       )}
