@@ -1,5 +1,4 @@
-/** @type {import('next').NextConfig} */
-
+// next.config.js
 const nextConfig = {
   experimental: {
     appDir: true,
@@ -7,12 +6,12 @@ const nextConfig = {
   webpack(config) {
     config.module.rules.push({
       test: /\.svg$/,
-      use: ["@svgr/webpack"],
+      use: ['@svgr/webpack'],
     });
 
     return config;
   },
-  output: "standalone",
+  output: 'standalone',
 };
 
 module.exports = nextConfig;

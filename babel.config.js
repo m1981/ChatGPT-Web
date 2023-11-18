@@ -1,5 +1,4 @@
+// babel.config.js
 module.exports = {
-  presets: [
-    ['next/babel'], // Next.js's default Babel preset
-  ],
+  presets: ['next/babel'],
 };
