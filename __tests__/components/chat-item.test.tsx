@@ -4,11 +4,19 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ChatItem } from '../../app/components/chat-list';
-import { DragDropContext } from '@hello-pangea/dnd';
+import { DragDropContext, Droppable } from '@hello-pangea/dnd';
 
-// Mocked DragDropContext for providing the necessary context
-const MockDragDropContextProvider = ({ children }) => (
-  <DragDropContext onDragEnd={() => {}}>{children}</DragDropContext>
+const TestWrapper = ({ children }) => (
+  <DragDropContext onDragEnd={() => {}}>
+    <Droppable droppableId="droppable-test-id">
+      {(provided) => (
+        <div ref={provided.innerRef} {...provided.droppableProps}>
+          {children}
+          {provided.placeholder}
+        </div>
+      )}
+    </Droppable>
+  </DragDropContext>
 );
 
 describe('ChatItem Component', () => {
@@ -30,9 +38,9 @@ describe('ChatItem Component', () => {
 
   it('renders ChatItem with the correct content', () => {
     render(
-      <MockDragDropContextProvider>
+      <TestWrapper>
         <ChatItem {...props} data-testid="chat-item" />
-      </MockDragDropContextProvider>
+      </TestWrapper>
     );
 
     // Check if the title is present
@@ -45,9 +53,9 @@ describe('ChatItem Component', () => {
 
   it('calls onClick prop when ChatItem is clicked', () => {
     render(
-      <MockDragDropContextProvider>
+      <TestWrapper>
         <ChatItem {...props} data-testid="chat-item" />
-      </MockDragDropContextProvider>
+      </TestWrapper>
     );
 
     // Trigger a click event on the ChatItem
@@ -59,9 +67,9 @@ describe('ChatItem Component', () => {
 
   it('calls onDelete prop when delete icon is clicked', () => {
     render(
-      <MockDragDropContextProvider>
+      <TestWrapper>
         <ChatItem {...props} data-testid="chat-item" />
-      </MockDragDropContextProvider>
+      </TestWrapper>
     );
 
     // Click the delete button by testId
@@ -74,9 +82,9 @@ describe('ChatItem Component', () => {
   it('applies selected styles when ChatItem is selected', () => {
     const selectedProps = { ...props, selected: true };
     render(
-      <MockDragDropContextProvider>
+      <TestWrapper>
         <ChatItem {...selectedProps} data-testid="chat-item" />
-      </MockDragDropContextProvider>
+      </TestWrapper>
     );
 
     // Check if the ChatItem has the 'selected' class
@@ -84,9 +92,9 @@ describe('ChatItem Component', () => {
 
     // Rerender with selected as false
     render(
-      <MockDragDropContextProvider>
+      <TestWrapper>
         <ChatItem {...props} data-testid="chat-item" />
-      </MockDragDropContextProvider>
+      </TestWrapper>
     );
 
     // Expect the selected class to be removed

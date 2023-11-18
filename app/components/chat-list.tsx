@@ -33,20 +33,19 @@ export function ChatItem(props: {
   id: number;
   index: number;
   narrow?: boolean;
+  'data-testid'?: string; // Add this line
 }) {
   return (
     // Make the chat item draggable using Draggable component
     <Draggable draggableId={`${props.id}`} index={props.index}>
       {(provided) => (
-        // Define the chat item's structure and styles
         <div
-          className={`${styles["chat-item"]} ${
-            props.selected && styles["chat-item-selected"]
-          }`}
+          className={`${styles['chat-item']} ${props.selected && styles['chat-item-selected']}`}
           onClick={props.onClick}
           ref={provided.innerRef}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
+          data-testid={props['data-testid']} // Use the data-testid prop here
         >
           {/* Render narrow chat item if narrow prop is true */}
           {props.narrow ? (
