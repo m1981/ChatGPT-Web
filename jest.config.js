@@ -14,9 +14,9 @@ const customJestConfig = {
     // Your other module name mappers...
   },
   transform: {
-    // This is the change: map any transformer except SVG to the Next.js Babel transformer
+    // Map JS/JSX/TS/TSX files to the Next.js Babel transformer
     '^.+\\.(js|jsx|ts|tsx)$': ['babel-jest', { presets: ['next/babel'] }],
-    '^.+\\.svg$': '<rootDir>/node_modules/jest-transformer-svg',
+    // No SVG transformer needed here as we're using moduleNameMapper to mock them
   },
   // ...rest of the config
 };
