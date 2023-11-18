@@ -9,16 +9,16 @@ const customJestConfig = {
   setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
   testEnvironment: 'jest-environment-jsdom',
   moduleNameMapper: {
+    '\\.(css|less|sass|scss)$': 'identity-obj-proxy',
     '\\.svg$': '<rootDir>/__mocks__/svgrMock.js',
-    // Add other mappings for CSS modules if necessary:
-    '\\.(css|scss|sass|less)$': 'identity-obj-proxy',
-    // Continue your existing mappings here
+    // Your other module name mappers...
   },
   transform: {
+    // This is the change: map any transformer except SVG to the Next.js Babel transformer
     '^.+\\.(js|jsx|ts|tsx)$': ['babel-jest', { presets: ['next/babel'] }],
-    // Add other transformations if necessary
+    '^.+\\.svg$': '<rootDir>/node_modules/jest-transformer-svg',
   },
-  // Add other Jest configuration options here
+  // ...rest of the config
 };
 
 module.exports = createJestConfig(customJestConfig);
