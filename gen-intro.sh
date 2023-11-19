@@ -57,7 +57,7 @@ Project structure
 " >> intro-for-gpt.txt
 
 echo '```' >> intro-for-gpt.txt
-find . -iname "*ts*" >> intro-for-gpt.txt
+find . -type f -not -path '*/\.*' -not -iname '*.jpg' -not -iname '*.png' -not -iname '*.svg'  -not -iname '*.*ss'  >> intro-for-gpt.txt
 echo '```' >> intro-for-gpt.txt
 
 echo >> intro-for-gpt.txt
