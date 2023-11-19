@@ -11,7 +11,250 @@ docker build -t chat_tests .
 podman --cgroup-manager=cgroupfs build --no-cache -t localhost/chat:dev --target=dev .
 podman --cgroup-manager=cgroupfs run -it --rm --entrypoint=/bin/sh localhost/chat:dev -c "yarn test"
 
+
+podman run -d -p 3000:3000 \
+  -e NODE_ENV=production \
+  -e DB_HOST=mydb.example.com \
+  -e DB_USER=myuser \
+  -e DB_PASS=mypass \
+  my-app:1.2.3
+
 </pre>
+
+
+# Configs
+When managing configurations for multiple environments, best practices include separating environment-specific settings from those common across all environments and ensuring configurations are easily maintainable and secure. Here’s a way to handle shared and environment-specific configurations in a Node.js application:
+
+### 1. Use a Base Configuration
+
+Create a base configuration file that includes settings common across all environments. This might include:
+
+- Default application settings
+- Feature flags
+- Shared service endpoints (if they do not change)
+- Default security settings
+
+Let’s assume you have a `config` folder in your project. Inside that:
+
+```javascript
+// config/base.js
+module.exports = {
+  appName: 'MyApp',
+  featureFlags: {
+    enableFeatureX: true,
+  },
+  security: {
+    contentSecurityPolicy: "...",
+  },
+  // ...
+};
+```
+
+### 2. Environment-Specific Configurations
+
+Create environment-specific files that will extend or override the base settings if necessary:
+
+```javascript
+// config/dev.js
+const baseConfig = require('./base');
+
+module.exports = {
+  ...baseConfig,
+  database: {
+    host: 'localhost',
+    user: 'devuser',
+    password: 'devpassword',
+    // ...
+  },
+  // Any other dev-specific overrides
+};
+```
+
+```javascript
+// config/prod.js
+const baseConfig = require('./base');
+
+module.exports = {
+  ...baseConfig,
+  database: {
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    // ...
+  },
+  // Any other production-specific overrides
+};
+```
+
+### 3. Dynamic Configuration Loading
+
+Load the correct configurations dynamically based on the environment the app is running in. Create an `index.js` in the config folder for this purpose:
+
+```javascript
+// config/index.js
+const devConfig = require('./dev');
+const prodConfig = require('./prod');
+const ciConfig = require('./ci');
+
+const ENV = process.env.NODE_ENV || 'development';
+
+let currentConfig;
+
+switch (ENV) {
+  case 'production':
+    currentConfig = prodConfig;
+    break;
+  case 'ci':
+    currentConfig = ciConfig;
+    break;
+  case 'development':
+    currentConfig = devConfig;
+    break;
+  default:
+    currentConfig = devConfig;
+    break;
+}
+
+module.exports = currentConfig;
+```
+
+### 4. Access the Config in Your Application
+
+Wherever you need to access the configuration within your application, you would require the `config/index.js`. This will always provide the correct, environment-specific configuration merged with the base configuration:
+
+```javascript
+// In your app code
+const config = require('./config');
+
+console.log(config.appName); // 'MyApp' from the base config
+console.log(config.database.host); // environment-specific from dev/prod/ci
+```
+
+### Best Practices Summary:
+
+- **Centralize Configuration:** Keeping configuration in a central location helps avoid scattered or hardcoded values throughout your codebase.
+- **Use Environment Variables for Secrets:** Do not store sensitive information such as API keys or passwords in configuration files. Use environment variables or a secrets management system instead.
+- **Immutable Deployments:** Build your application in such a way that the configuration does not change once deployed. This means that the application must be rebuilt to change the configuration, which promotes consistency and reliability across environments.
+- **Do Not Duplicate Configs:** Don’t repeat the same configuration in multiple places. Use a base configuration and extend or override it as needed for each environment.
+- **Version Control:** Keep the configuration files under version control, excluding any sensitive data like passwords or private keys, to track changes and maintain the history.
+
+By applying these practices, you can have a configuration management system in your project that is both robust and flexible, simplifying the process of maintaining different environments for development, CI, and production.
+
+
+# Dockerfiles
+
+To utilize the Dockerfile for development, CI, and production, you should adjust the build and execution process to accommodate the needs of each environment. Here's a guide on how to use the Dockerfile in different contexts:
+
+### Development:
+
+In development, you may want to mount your code into the container to enable hot-reloading and use tools like `proxychains-ng` if needed.
+
+1. Create a `docker-compose.yml` for easy local development, which may include volumes for live code updates and port mappings:
+
+```yaml
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: base
+    ports:
+      - '3000:3000'
+    volumes:
+      - .:/app
+      - /app/node_modules
+    environment:
+      - OPENAI_API_KEY=your_dev_key
+      - NODE_ENV=development
+    # Add other tools or services required for development (databases, redis, etc.)
+```
+
+2. Use `docker-compose` for building and starting your application:
+
+```sh
+docker-compose up --build
+```
+
+### Continuous Integration (CI):
+
+In CI, you’ll typically want to run tests and not deploy the running application the same way as in production.
+
+1. Configure your CI pipeline (such as GitHub Actions, GitLab CI, etc.) to build the Docker image:
+
+```yaml
+# Example CI pipeline step using GitHub Actions
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+
+      - name: Cache Docker layers
+        uses: actions/cache@v2
+        with:
+          path: /tmp/.buildx-cache
+          key: ${{ runner.os }}-buildx-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-buildx-
+
+      - name: Build Docker image
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          file: ./Dockerfile
+          load: true
+          tags: myapp:ci
+          build-args:
+            OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}
+            CODE=${{ secrets.CODE }}
+```
+
+2. After building, run the tests within a Docker container as part of the CI pipeline:
+
+```yaml
+# Continuing the example CI pipeline from GitHub Actions
+      - name: Run tests
+        run: docker run --rm myapp:ci yarn test
+```
+
+### Production:
+
+For production, you want an image that's as slim and secure as possible, and you will not be mounting live code.
+
+1. Build the production-specific image:
+
+```sh
+docker build -t myapp:prod --target=runner .
+```
+
+2. In your production deployment, you can skip the mounting of volumes, and you won’t need `proxychains-ng` (assuming you’re not using it in production). Thus, your Docker run command might look like:
+
+```sh
+docker run -d --name myapp-prod -p 80:3000 \
+-e OPENAI_API_KEY=your_production_key \
+-e NODE_ENV=production \
+myapp:prod
+```
+
+Or, if you’re using a service manager like Kubernetes or a cloud service provider's orchestration tools, you would use their respective configurations (Kubernetes manifests, AWS ECS task definitions, etc.) to deploy the Docker container.
+
+### Best Practices:
+
+- Decide what’s needed in each environment and tailor the Docker images accordingly (use multi-stage builds when necessary).
+- Always tag your Docker images appropriately for each environment.
+- Use environment variables for injecting sensitive and environment-specific configuration. Do not hard code them into the image.
+- Ensure that you have a `.dockerignore` file set up to exclude unnecessary files from the build context.
+- For secrets (like `OPENAI_API_KEY`), use your orchestrator's secrets management tools to avoid exposing them.
+- In production, use `docker-compose` with caution and instead prefer orchestrators (Kubernetes, ECS, etc.) for better management, fault tolerance, and scaling capabilities.
+- In CI, ensure that building the Docker image and running tests does not inadvertently alter the production state or leak sensitive information.
+
+This strategy allows you to manage a unified Docker workflow across different stages of software development, ensuring consistency and efficient promotion through environments.
 
 <img src="./docs/images/icon.svg" alt="icon"/>
 
