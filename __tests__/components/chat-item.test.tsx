@@ -10,6 +10,12 @@ import { DragDropContext, Droppable } from '@hello-pangea/dnd';
 afterEach(cleanup);
 
 // Any necessary setup for Jest mocks would go here
+jest.mock('../icons/delete2.svg', () => {
+  return {
+    __esModule: true,
+    default: () => <svg data-testid="delete-icon" />,
+  };
+});
 
 
 const TestWrapper = ({ children }) => (
