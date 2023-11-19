@@ -105,7 +105,7 @@ interface ChatStore {
 }
 
 function countMessages(msgs: Message[]) {
-  return msgs.reduce((pre, cur) => pre + cur.content.length, 0);
+  return msgs.reduce((pre, cur) => pre + (cur.content?.length ?? 0), 0);
 }
 
 const LOCAL_KEY = "chat-next-web-store";
@@ -265,6 +265,7 @@ export const useChatStore = create<ChatStore>()(
         requestChatStream(sendMessages, {
           onMessage(content, done) {
             // stream response
+             botMessage.content = content ?? "";
             if (done) {
               botMessage.streaming = false;
               botMessage.content = content;
@@ -352,7 +353,7 @@ export const useChatStore = create<ChatStore>()(
         ) {
           const msg = messages[i];
           if (!msg || msg.isError) continue;
-          count += msg.content.length;
+          count += msg.content?.length ?? 0;
           reversedRecentMessages.push(msg);
         }
 
@@ -431,7 +432,7 @@ export const useChatStore = create<ChatStore>()(
           session.sendMemory
         ) {
           requestChatStream(
-            toBeSummarizedMsgs.concat({
+            toBeSummarizedMsgs.map(msg => ({...msg, content: msg.content ?? ""})).concat({
               role: "system",
               content: Locale.Store.Prompt.Summarize,
               date: "",
@@ -455,8 +456,9 @@ export const useChatStore = create<ChatStore>()(
       },
 
       updateStat(message) {
+        const contentLength = message.content?.length ?? 0;
         get().updateCurrentSession((session) => {
-          session.stat.charCount += message.content.length;
+          session.stat.charCount += contentLength;
           // TODO: should update chat count and word count
         });
       },

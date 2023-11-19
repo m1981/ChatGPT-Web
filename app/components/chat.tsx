@@ -543,11 +543,11 @@ export function Chat() {
   const onRightClick = (e: any, message: Message) => {
     // auto fill user input
     if (message.role === "user") {
-      setUserInput(message.content);
+      setUserInput(message.content ?? '');
     }
 
     // copy to clipboard
-    if (selectOrCopy(e.currentTarget, message.content)) {
+    if (selectOrCopy(e.currentTarget, message.content ?? '')) {
       e.preventDefault();
     }
   };
@@ -569,10 +569,20 @@ export function Chat() {
   };
 
   const deleteMessage = (userIndex: number) => {
-    chatStore.updateCurrentSession((session) =>
-      session.messages.splice(userIndex, 2),
-    );
+    chatStore.updateCurrentSession((session) => {
+      // Create a new array without the messages to delete
+      const updatedMessages = [
+        ...session.messages.slice(0, userIndex),
+        ...session.messages.slice(userIndex + 2),
+      ];
+      // Return a new session object with updated messages
+      return {
+        ...session,
+        messages: updatedMessages
+      };
+    });
   };
+
 
   const onDelete = (botMessageId: number) => {
     const userIndex = findLastUesrIndex(botMessageId);
@@ -587,10 +597,18 @@ export function Chat() {
 
     setIsLoading(true);
     const content = session.messages[userIndex].content;
-    deleteMessage(userIndex);
-    chatStore.onUserInput(content).then(() => setIsLoading(false));
-    inputRef.current?.focus();
+
+    // Check that content is not undefined
+    if (content !== undefined) {
+      deleteMessage(userIndex);
+      chatStore.onUserInput(content).then(() => setIsLoading(false));
+      inputRef.current?.focus();
+    } else {
+      // Handle the undefined content case, for example setting loading to false
+      setIsLoading(false);
+    }
   };
+
 
   const context: RenderMessage[] = session.context.slice();
 
@@ -598,7 +616,8 @@ export function Chat() {
 
   if (
     context.length === 0 &&
-    session.messages.at(0)?.content !== BOT_HELLO.content
+    (session.messages.at(0)?.content ?? '') !== BOT_HELLO.content
+
   ) {
     const copiedHello = Object.assign({}, BOT_HELLO);
     if (!accessStore.isAuthorized()) {
@@ -641,8 +660,11 @@ export function Chat() {
 
   const renameSession = () => {
     const newTopic = prompt(Locale.Chat.Rename, session.topic);
-    if (newTopic && newTopic !== session.topic) {
-      chatStore.updateCurrentSession((session) => (session.topic = newTopic!));
+    if (typeof newTopic === 'string' && newTopic !== session.topic) {
+      chatStore.updateCurrentSession((session) => ({
+        ...session,
+        topic: newTopic
+      }));
     }
   };
 
@@ -724,10 +746,11 @@ export function Chat() {
       >
         {messages.map((message, i) => {
           const isUser = message.role === "user";
+          const contentIsEmpty = (message.content?.length ?? 0) === 0;
           const showActions =
             !isUser &&
             i > 0 &&
-            !(message.preview || message.content.length === 0);
+            !(message.preview || contentIsEmpty);
           const showTyping = message.preview || message.streaming;
 
           return (
@@ -775,21 +798,21 @@ export function Chat() {
 
                       <div
                         className={styles["chat-message-top-action"]}
-                        onClick={() => copyToClipboard(message.content)}
+                        onClick={() => copyToClipboard(message.content ?? '')}
                       >
                         {Locale.Chat.Actions.Copy}
                       </div>
                     </div>
                   )}
                   <Markdown
-                    content={message.content}
-                    loading={
-                      (message.preview || message.content.length === 0) &&
-                      !isUser
-                    }
-                    onContextMenu={(e) => onRightClick(e, message)}
-                    fontSize={fontSize}
-                    parentRef={scrollRef}
+                      content={message.content ?? ""} // Fallback to an empty string if content is undefined
+                      loading={
+                          (message.preview || (message.content?.length ?? 0) === 0) &&
+                          !isUser
+                      }
+                      onContextMenu={(e) => onRightClick(e, message)}
+                      fontSize={fontSize}
+                      parentRef={scrollRef}
                   />
                 </div>
                 {!isUser && !message.preview}
