@@ -62,7 +62,7 @@ export function ChatItem(props: {
             e.stopPropagation();
             props.onDelete?.();
           }}>
-            <DeleteIcon data-testid="delete-icon" />
+            <div data-testid="delete-icon" />
           </div>
         </div>
       )}

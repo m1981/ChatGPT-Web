@@ -1,3 +1,18 @@
+# Build image to run TESTS
+# docker build -t chatgpt-web_app:test --target test  .
+
+# Build image to run DEV server
+# docker build -t chatgpt-web_app:runner --target runner .
+
+# Run local DEV server
+# docker run -d --name chatgpt-app_container -p 3000:3000 \
+#  -v "$(pwd)":/app \
+#  -v /app/node_modules \
+#  -e OPENAI_API_KEY=your_dev_key \
+#  -e NODE_ENV=development \
+#  localhost/chatgpt-web_app
+
+
 # Use a specific tag for reproducibility
 FROM node:18-alpine3.15 AS base
 
@@ -15,7 +30,7 @@ ENV CODE=""
 FROM base AS deps
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
-COPY package.json yarn.lock ./
+COPY package.json  ./
 RUN yarn install
 #--frozen-lockfile
 RUN ls -al /app
@@ -25,6 +40,15 @@ WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 RUN yarn build
+
+FROM deps AS test
+
+WORKDIR /app
+COPY . .
+# NODE_ENV=test was added here to install both dependencies and devDependencies
+RUN NODE_ENV=test yarn install
+# --frozen-lockfile
+CMD ["yarn", "test:ci"]
 
 FROM base AS runner
 WORKDIR /app
