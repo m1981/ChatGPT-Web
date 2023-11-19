@@ -81,23 +81,23 @@ describe('ChatItem Component', () => {
 
   it('applies selected styles when ChatItem is selected', () => {
     const selectedProps = { ...props, selected: true };
-    render(
+    const { rerender, getByTestId } = render(
       <TestWrapper>
         <ChatItem {...selectedProps} data-testid="chat-item" />
       </TestWrapper>
     );
 
-    // Check if the ChatItem has the 'selected' class
-    expect(screen.getByTestId('chat-item')).toHaveClass('chat-item-selected');
+    expect(getByTestId('chat-item')).toHaveClass('chat-item-selected');
 
     // Rerender with selected as false
-    render(
+    rerender(
       <TestWrapper>
         <ChatItem {...props} data-testid="chat-item" />
       </TestWrapper>
     );
 
-    // Expect the selected class to be removed
-    expect(screen.getByTestId('chat-item')).not.toHaveClass('chat-item-selected');
+    // Expect the selected class to be removed from the new element
+    expect(getByTestId('chat-item')).not.toHaveClass('chat-item-selected');
   });
+
 });
