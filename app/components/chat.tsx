@@ -668,6 +668,43 @@ export function Chat() {
     }
   };
 
+
+  // Render actions, can be used for both top and bottom actions
+  const renderActions = (message, i, position) => (
+    <div className={styles[position === 'top' ? "chat-message-top-actions" : "chat-message-bottom-actions"]}>
+      {message.streaming ? (
+        <div
+          className={styles["chat-message-action"]}
+          onClick={() => onUserStop(message.id ?? i)}
+        >
+          {Locale.Chat.Actions.Stop}
+        </div>
+      ) : (
+        <>
+          <div
+            className={styles["chat-message-action"]}
+            onClick={() => onDelete(message.id ?? i)}
+          >
+            {Locale.Chat.Actions.Delete}
+          </div>
+          <div
+            className={styles["chat-message-action"]}
+            onClick={() => onResend(message.id ?? i)}
+          >
+            {Locale.Chat.Actions.Retry}
+          </div>
+        </>
+      )}
+
+      <div
+        className={styles["chat-message-action"]}
+        onClick={() => copyToClipboard(message.content ?? '')}
+      >
+        {Locale.Chat.Actions.Copy}
+      </div>
+    </div>
+  );
+
   // Auto focus
   useEffect(() => {
     if (isMobileScreen) return;
@@ -756,9 +793,7 @@ export function Chat() {
           return (
             <div
               key={i}
-              className={
-                isUser ? styles["chat-message-user"] : styles["chat-message"]
-              }
+              className={isUser ? styles["chat-message-user"] : styles["chat-message"]}
             >
               <div className={styles["chat-message-container"]}>
                 <div className={styles["chat-message-avatar"]}>
@@ -769,58 +804,25 @@ export function Chat() {
                     {Locale.Chat.Typing}
                   </div>
                 )}
+                {showActions && renderActions(message, i, 'top')}
                 <div className={styles["chat-message-item"]}>
-                  {showActions && (
-                    <div className={styles["chat-message-top-actions"]}>
-                      {message.streaming ? (
-                        <div
-                          className={styles["chat-message-top-action"]}
-                          onClick={() => onUserStop(message.id ?? i)}
-                        >
-                          {Locale.Chat.Actions.Stop}
-                        </div>
-                      ) : (
-                        <>
-                          <div
-                            className={styles["chat-message-top-action"]}
-                            onClick={() => onDelete(message.id ?? i)}
-                          >
-                            {Locale.Chat.Actions.Delete}
-                          </div>
-                          <div
-                            className={styles["chat-message-top-action"]}
-                            onClick={() => onResend(message.id ?? i)}
-                          >
-                            {Locale.Chat.Actions.Retry}
-                          </div>
-                        </>
-                      )}
-
-                      <div
-                        className={styles["chat-message-top-action"]}
-                        onClick={() => copyToClipboard(message.content ?? '')}
-                      >
-                        {Locale.Chat.Actions.Copy}
-                      </div>
-                    </div>
-                  )}
                   <Markdown
-                      content={message.content ?? ""} // Fallback to an empty string if content is undefined
-                      loading={
+                    content={message.content ?? ""}
+                    loading={
                           (message.preview || (message.content?.length ?? 0) === 0) &&
                           !isUser
-                      }
-                      onContextMenu={(e) => onRightClick(e, message)}
-                      fontSize={fontSize}
-                      parentRef={scrollRef}
+                    }
+                    onContextMenu={(e) => onRightClick(e, message)}
+                    fontSize={fontSize}
+                    parentRef={scrollRef}
                   />
                 </div>
-                {!isUser && !message.preview}
-                    </div>
-                  </div>
+                {showActions && renderActions(message, i, 'bottom')}
+              </div>
+            </div>
           );
         })}
-              </div>
+      </div>
 
       <div className={styles["chat-input-panel"]}>
         <PromptHints prompts={promptHints} onPromptSelect={onPromptSelect} />
