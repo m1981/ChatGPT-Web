@@ -806,7 +806,7 @@ export function Chat() {
                     {Locale.Chat.Typing}
                   </div>
                 )}
-                {showActions && renderActions(message, i, 'top')}
+
                 <div className={styles["chat-message-item"]}>
                   <Markdown
                     content={message.content ?? ""}
