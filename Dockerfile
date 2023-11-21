@@ -2,15 +2,17 @@
 # docker build -t chatgpt-web_app:test --target test  .
 
 # Build image to run DEV server
-# docker build -t chatgpt-web_app:runner --target runner .
+# docker build -t chatgpt-web_app:dev --target development .
 
 # Run local DEV server
-# docker run -d --name chatgpt-app_container -p 3000:3000 \
-#  -v "$(pwd)":/app \
-#  -v /app/node_modules \
-#  -e OPENAI_API_KEY=your_dev_key \
-#  -e NODE_ENV=development \
-#  localhost/chatgpt-web_app
+# docker run --rm --name chatgpt-app_container -p 3000:3000 \
+# -v "$(pwd)":/app \
+# -v /app/node_modules \
+# -e OPENAI_API_KEY=your_dev_key \
+# -e NODE_ENV=development \
+# chatgpt-web_app:dev
+
+# docker run  --name chatgpt-app_server_container -p 3000:3000   -e OPENAI_API_KEY=your_dev_key   -e NODE_ENV=development   chatgpt-web_app:dev
 
 
 # Use a specific tag for reproducibility
@@ -20,20 +22,31 @@ FROM node:18-alpine3.15 AS base
 RUN addgroup -g 1001 -S nodejs
 RUN adduser -S appuser -u 1001
 
+# Set working directory
+WORKDIR /app
+
 # Set a default value for environment variables
 ENV OPENAI_API_KEY=""
 ENV CODE=""
 
-# Custom set up like changing the npm registry should be avoided in production Dockerfiles
-# If needed, this should be handled during development or CI
-
+# Base stage for shared environment setup
 FROM base AS deps
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
-COPY package.json  ./
+COPY package.json ./
 RUN yarn install
-#--frozen-lockfile
-RUN ls -al /app
+
+# Development stage
+FROM base AS development
+# Copy installed dependencies from deps stage
+COPY --from=deps /app/node_modules ./node_modules
+COPY . .
+# Switch to non-root user for security
+USER appuser
+# Expose the port Next.js dev server runs on
+EXPOSE 3000
+# Command to start the development server with hot reload
+CMD ["yarn", "dev"]
 
 FROM base AS builder
 WORKDIR /app
@@ -63,7 +76,4 @@ COPY --from=builder /app/yarn.lock ./yarn.lock
 USER appuser
 RUN ls -al /app
 EXPOSE 3000
-COPY entrypoint.sh /app/entrypoint.sh
-CMD ["/app/entrypoint.sh"]
-
-# CMD ["node", "server.js"]
+CMD ["node", "server.js"]
