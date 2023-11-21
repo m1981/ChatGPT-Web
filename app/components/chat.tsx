@@ -670,7 +670,7 @@ export function Chat() {
 
 
   // Render actions, can be used for both top and bottom actions
-  const renderActions = (message, i, position) => (
+  const renderActions = (message: Message, i: number, position: 'top' | 'bottom') => (
       <div className={styles[position === 'top' ? "chat-message-top-actions" : "chat-message-bottom-actions"]}>
 
 
