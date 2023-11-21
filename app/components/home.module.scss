@@ -305,6 +305,8 @@
   }
 }
 
+//------------------------------------------------------
+
 .chat-message {
   display: flex;
   flex-direction: row;
@@ -316,29 +318,30 @@
 }
 
 .chat-message-container {
-  max-width: var(--message-max-width); /* Sets the maximum width of the message container */
+  max-width: var(--message-max-width);
   display: flex;
-  flex-direction: column; /* The messages will stack on top of one another */
-  align-items: flex-start; /* Aligns the items to the start of the flex container */
+  flex-direction: column;
+  align-items: flex-end; // Align children (message and actions) to the right side
+  position: relative; // Needed for absolute positioning of children
 
   &:hover {
-    /* When the .chat-message-container is hovered */
     .chat-message-top-actions {
-      opacity: 1; /* Make the top actions fully visible */
-      right: 50px; /* Move the action buttons a little bit left from the right edge */
-      pointer-events: all; /* Make the actions clickable (since they're initially not clickable) */
+      opacity: 1;
+      right: 50px;
+      pointer-events: all;
     }
-    .chat-message-bottom-actions{
-      opacity: 1; /* Make the top actions fully visible */
-      right: 50px; /* Move the action buttons a little bit left from the right edge */
-      pointer-events: all; /* Make the actions clickable (since they're initially not clickable) */
+    .chat-message-bottom-actions {
+      opacity: 1;
+      right: 50px;
+      pointer-events: all;
     }
   }
 }
 
 .chat-message-user > .chat-message-container {
-  align-items: flex-end;
+  align-items: flex-start;
 }
+
 
 .chat-message-avatar {
   margin-top: 15px;
@@ -382,103 +385,56 @@
 }
 
 .pill {
-  padding: 0px 5px;
+  padding: 1px 5px;
   background-color: var(--black);
   border: var(--border-in-light);
   border-radius: 10px;
-  margin-right: 5px;
+  margin-right: 10px;
 }
 
-
-.chat-message-top-actions {
-  font-size: 12px; /* Sets the font size of the actions */
-  position: absolute; /* Positions the action buttons absolutely relative to their nearest positioned ancestor */
-  right: 20px; /* Positions the action buttons from the right */
-  top: -26px; /* Positions the action buttons above the message container */
-  left: 100px; /* Likely intended to have right and left set to keep element in view, which may be a mistake */
-  transition: all ease 0.3s; /* Adds a transition effect when styles change for smooth visual feedback */
-  opacity: 0; /* Initially, actions are fully transparent */
-  pointer-events: none; /* Initially, actions can't be clicked */
-
-  display: flex;
-  flex-direction: row-reverse; /* Items are laid out in a row but in reverse to keep the structure RTL */
-  color: yellow;
-  padding: 0px 5px;
-  background-color: var(--black);
-  border: var(--border-in-light);
-  border-radius: 10px;
-
-  .chat-message-top-action {
-    opacity: 0.5; /* Actions are slightly transparent, adding to the disabled effect */
-    color: red; /* Sets the text color of the actions */
-    white-space: nowrap; /* Prevents the actions text from wrapping */
-    cursor: pointer; /* Changes the cursor to indicate that the action is clickable */
-
-    &:hover {
-      /* When an individual action is hovered */
-      opacity: 1; /* Make the action fully opaque (more visible) on hover */
-    }
-
-    &:not(:first-child) {
-      margin-right: 10px; /* Adds space between actions, except the first one (since it's row-reverse) */
-    }
-  }
-}
-
-
-/* Adjust the styles for the chat message container */
-.chat-message-container {
-  max-width: var(--message-max-width);
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end; /* Align items to the end to put actions at the right edge */
-}
-
-/* New styles for bottom actions */
-.chat-message-bottom-actions {
+.chat-message-actions {
   font-size: 12px;
-  position: relative; /* Now relative to the normal document flow */
-  width: 100%; /* Take the full width of the message container */
-  display: flex;
-  justify-content: flex-end; /* Align the buttons to the right */
-  margin-top: 8px; /* Add a bit of margin on top for spacing */
-  opacity: 0; /* Initially, bottom actions are invisible */
-  transition: opacity ease 0.3s; /* Transition for the opacity change */
-  pointer-events: none; /* Initially, bottom actions can't be clicked */
-  color: red;
-}
-
-/* Styling for the individual bottom action buttons */
-.chat-message-bottom-action {
-  opacity: 0.5; /* For a disabled look initially */
-  color: var(--black);
+  color: var(--white);
+  position: absolute; // Position actions absolutely within .chat-message-container
+  right: 20px; // Right aligned, 20px from the right edge of the container
+  transition: opacity ease 0.3s;
+  opacity: 0.5; // Adjust as needed
+  pointer-events: none;
   white-space: nowrap;
   cursor: pointer;
-  margin-left: 8px; /* Space between buttons */
 
   &:hover {
-    opacity: 1; /* On hover, the button appears fully opaque */
+    opacity: 1;
+  }
+
+  &.pill {
+    padding: 1px 5px;
+    background-color: var(--black);
+    border-radius: 10px;
   }
 }
 
+// Specific to the top actions
+.chat-message-top-actions {
+  @extend .chat-message-actions;
+  bottom: 100%; // Position the actions at the bottom end of the container, then offset upward
+  margin-bottom: 4px; // Provide some space between the actions and the message
+}
 
-
-
-
+// Specific to the bottom actions
+.chat-message-bottom-actions {
+  @extend .chat-message-actions;
+  top: 100%; // Position the actions at the top end of the container, then offset downward
+  margin-top: 4px; // Provide some space between the message and the actions
+}
 
 .chat-message-user > .chat-message-container > .chat-message-item {
   color: var(--chat-user-color);
   background-color: var(--chat-user-bg);
 }
 
-.chat-message-actions {
-  display: flex;
-  flex-direction: row-reverse;
-  width: 100%;
-  padding-top: 5px;
-  box-sizing: border-box;
-  font-size: 12px;
-}
+
+//------------------------------------------------------------------
 
 .chat-message-action-date {
   color: #aaa;

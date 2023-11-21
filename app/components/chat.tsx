@@ -671,38 +671,39 @@ export function Chat() {
 
   // Render actions, can be used for both top and bottom actions
   const renderActions = (message, i, position) => (
-    <div className={styles[position === 'top' ? "chat-message-top-actions" : "chat-message-bottom-actions"]}>
+      <div className={styles[position === 'top' ? "chat-message-top-actions" : "chat-message-bottom-actions"]}>
+        <div
+          className={[styles["chat-message-action"], styles.pill].join(' ')}
+          onClick={() => copyToClipboard(message.content ?? '')}
+        >
+          {Locale.Chat.Actions.Copy}
+        </div>
+
       {message.streaming ? (
         <div
-          className={styles["chat-message-action"]}
+          className={[styles["chat-message-action"], styles.pill].join(' ')}
           onClick={() => onUserStop(message.id ?? i)}
         >
           {Locale.Chat.Actions.Stop}
         </div>
       ) : (
         <>
-          <div
-            className={styles["chat-message-action"]}
-            onClick={() => onDelete(message.id ?? i)}
-          >
-            {Locale.Chat.Actions.Delete}
-          </div>
-          <div
-            className={styles["chat-message-action"]}
+           <div
+            className={[styles["chat-message-action"], styles.pill].join(' ')}
             onClick={() => onResend(message.id ?? i)}
           >
             {Locale.Chat.Actions.Retry}
           </div>
+
+         <div
+            className={[styles["chat-message-action"], styles.pill].join(' ')}
+            onClick={() => onDelete(message.id ?? i)}
+          >
+            {Locale.Chat.Actions.Delete}
+          </div>
         </>
       )}
-
-      <div
-        className={styles["chat-message-action"]}
-        onClick={() => copyToClipboard(message.content ?? '')}
-      >
-        {Locale.Chat.Actions.Copy}
       </div>
-    </div>
   );
 
   // Auto focus
