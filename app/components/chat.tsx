@@ -569,20 +569,10 @@ export function Chat() {
   };
 
   const deleteMessage = (userIndex: number) => {
-    chatStore.updateCurrentSession((session) => {
-      // Create a new array without the messages to delete
-      const updatedMessages = [
-        ...session.messages.slice(0, userIndex),
-        ...session.messages.slice(userIndex + 2),
-      ];
-      // Return a new session object with updated messages
-      return {
-        ...session,
-        messages: updatedMessages
+    chatStore.updateCurrentSession((session) =>
+      session.messages.splice(userIndex, 2),
+    );
       };
-    });
-  };
-
 
   const onDelete = (botMessageId: number) => {
     const userIndex = findLastUesrIndex(botMessageId);
@@ -670,10 +660,8 @@ export function Chat() {
 
 
   // Render actions, can be used for both top and bottom actions
-  const renderActions = (message: Message, i: number, position: 'top' | 'bottom') => (
+  const renderActions = (message: Message, i: number, position: 'top' | 'bottom', isLast: boolean) => (
       <div className={styles[position === 'top' ? "chat-message-top-actions" : "chat-message-bottom-actions"]}>
- 
-
       {message.streaming ? (
         <div
           className={[styles["chat-message-action"], styles.pill].join(' ')}
@@ -690,12 +678,14 @@ export function Chat() {
             {Locale.Chat.Actions.Delete}
           </div>
 
+          {isLast && (
            <div
             className={[styles["chat-message-action"], styles.pill].join(' ')}
             onClick={() => onResend(message.id ?? i)}
           >
             {Locale.Chat.Actions.Retry}
           </div>
+          )}
         </>
       )}
         <div
@@ -791,10 +781,11 @@ export function Chat() {
             i > 0 &&
             !(message.preview || contentIsEmpty);
           const showTyping = message.preview || message.streaming;
+          const lastIndex = messages.length - 1;
 
           return (
             <div
-              key={message.id}
+              key={i}
               className={isUser ? styles["chat-message-user"] : styles["chat-message"]}
             >
               <div className={styles["chat-message-container"]}>
@@ -819,7 +810,7 @@ export function Chat() {
                     parentRef={scrollRef}
                   />
                 </div>
-                {showActions && renderActions(message, i, 'bottom')}
+                {showActions && renderActions(message, i, 'bottom', i === lastIndex)}
               </div>
             </div>
           );
