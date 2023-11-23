@@ -308,44 +308,6 @@
 
 //------------------------------------------------------
 
-.chat-message {
-  display: flex;
-  flex-direction: row;
-}
-
-.chat-message-user {
-  display: flex;
-  flex-direction: row-reverse;
-}
-
-.chat-message-container {
-  max-width: var(--message-max-width);
-  min-width: 100%;
-
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  position: relative; // Needed for absolute positioning of children
-
-  &:hover {
-    .chat-message-top-actions {
-      opacity: 1;
-      right: 10px;
-      pointer-events: all;
-    }
-    .chat-message-bottom-actions {
-      opacity: 1;
-      right: 10px;
-      pointer-events: all;
-    }
-  }
-}
-
-.chat-message-user > .chat-message-container {
-  align-items: flex-start;
-}
-
-
 .chat-message-avatar {
   margin-top: 15px;
   height: 22px;
@@ -372,6 +334,43 @@
 }
 
 
+
+.chat-message {
+  display: flex;
+  flex-direction: row;
+}
+
+.chat-message-user {
+  display: flex;
+  flex-direction: row-reverse;
+}
+
+.chat-message-container {
+  max-width: var(--message-max-width);
+  min-width: 100%;
+  justify-content: flex-end; 
+  display: flex;
+  flex-direction: column;
+  &:hover {
+    .chat-message-top-actions {
+      opacity: 1;
+      right: 10px;
+      pointer-events: all;
+    }
+    .chat-message-bottom-actions {
+      opacity: 1;
+      right: 10px;
+      pointer-events: all;
+    }
+  }
+}
+
+.chat-message-user > .chat-message-container {
+  align-items: flex-start;
+}
+
+
+
 .chat-message-item {
   box-sizing: border-box;
   min-width: 100%;
@@ -384,7 +383,6 @@
   word-break: break-word;
   border: 0;
   border-radius: 10px;
-  position: relative;
 }
 
 .pill {
@@ -399,22 +397,18 @@
   display: flex;
   flex-direction: row;
   align-items: center;
+  justify-content: flex-end;
+  flex-grow: 1;
   gap: 10px;
   font-size: 15px;
   color: var(--white);
-  position: absolute;
-  right: 0;
-  top: 0;
+  margin-top: 5px;
   transition: opacity ease 0.7s;
   opacity: 0;
   pointer-events: none;
   white-space: nowrap;
   cursor: pointer;
 
-  &:hover {
-    opacity: 1;
-    pointer-events: all;
-  }
 
   &.pill {
     padding: 1px 5px;
@@ -423,18 +417,14 @@
   }
 }
 
-// Specific to the top actions
 .chat-message-top-actions {
   @extend .chat-message-actions;
-  bottom: 100%;
-  margin-bottom: -45px;
+  order: -1;
 }
- 
-// Specific to the bottom actions
+
 .chat-message-bottom-actions {
   @extend .chat-message-actions;
-  top: 100%;
-  margin-top: -2px;
+  order: 2;
 }
 
 .chat-message-user > .chat-message-container > .chat-message-item {
