@@ -85,13 +85,7 @@ export function Markdown(
           remarkPlugins={[RemarkMath, RemarkGfm, RemarkBreaks]}
           rehypePlugins={[
             RehypeKatex,
-            [
-              RehypeHighlight,
-              {
-                detect: false,
-                ignoreMissing: true,
-              },
-            ],
+            [RehypeHighlight, { hljs }]
           ]}
           components={{
             pre: PreCode,
