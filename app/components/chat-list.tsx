@@ -54,6 +54,12 @@ export function ChatItem(props: {
             // Render normal chat item with title and info
             <>
               <div className={styles["chat-item-title"]}>{props.title}</div>
+              <div className={styles["chat-item-info"]}>
+                <div className={styles["chat-item-count"]}>
+                  {Locale.ChatItem.ChatItemCount(props.count)}
+                </div>
+                <div className={styles["chat-item-date"]}>{props.time}</div>
+              </div>              
             </>
           )}
 
