@@ -30,7 +30,7 @@ const DEFAULT_CONFIG = {
   disablePromptHint: false,
 
   modelConfig: {
-    model: "gpt-4-1106-preview"  as ModelType,
+    model: "gpt-4o"  as ModelType,
     temperature: 1,
     max_tokens: 128000,
     presence_penalty: 0,
@@ -50,27 +50,11 @@ const ENABLE_GPT4 = true;
 
 export const ALL_MODELS = [
   {
-    name: "gpt-4",
+    name: "gpt-4o",
     available: ENABLE_GPT4,
   },
   {
-    name: "gpt-4-1106-preview",
-    available: ENABLE_GPT4,
-  },
-  {
-    name: "gpt-4-32k",
-    available: ENABLE_GPT4,
-  },
-  {
-    name: "gpt-4-32k-0314",
-    available: ENABLE_GPT4,
-  },
-  {
-    name: "gpt-3.5-turbo",
-    available: true,
-  },
-  {
-    name: "gpt-3.5-turbo-0301",
+    name: "gpt-4o-mini",
     available: true,
   },
 ] as const;
@@ -93,7 +77,7 @@ export function limitNumber(
 export function limitModel(name: string) {
   return ALL_MODELS.some((m) => m.name === name && m.available)
     ? name
-    : ALL_MODELS[4].name;
+    : ALL_MODELS[0].name;
 }
 
 export const ModalConfigValidator = {
