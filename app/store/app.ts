@@ -392,7 +392,7 @@ export const useChatStore = create<ChatStore>()(
           countMessages(session.messages) >= SUMMARIZE_MIN_LEN
         ) {
           requestWithPrompt(session.messages, Locale.Store.Prompt.Topic, {
-            model: "gpt-3.5-turbo",
+            model: "gpt-4o",
           }).then((res) => {
             get().updateCurrentSession(
               (session) =>
@@ -439,7 +439,7 @@ export const useChatStore = create<ChatStore>()(
             }),
             {
               filterBot: false,
-              model: "gpt-3.5-turbo",
+              model: "gpt-4o",
               onMessage(message, done) {
                 session.memoryPrompt = message;
                 if (done) {
