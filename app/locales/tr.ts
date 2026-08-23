@@ -127,6 +127,16 @@ const tr: LocaleType = {
       SubTitle: "Erişim kodu sınırını yoksaymak için anahtarınızı kullanın",
       Placeholder: "OpenAI API Anahtarı",
     },
+    AnthropicToken: {
+      Title: "Anthropic API Anahtarı",
+      SubTitle: "Erişim kodu sınırını yoksaymak için anahtarınızı kullanın",
+      Placeholder: "Anthropic API Anahtarı",
+    },
+    GoogleToken: {
+      Title: "Google API Anahtarı",
+      SubTitle: "Erişim kodu sınırını yoksaymak için anahtarınızı kullanın",
+      Placeholder: "Google API Anahtarı",
+    },
     Usage: {
       Title: "Hesap Bakiyesi",
       SubTitle(used: any, total: any) {

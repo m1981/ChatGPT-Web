@@ -128,6 +128,16 @@ const jp = {
       SubTitle: "自分のキーを使用してパスワードアクセス制限を迂回する",
       Placeholder: "OpenAI APIキー",
     },
+    AnthropicToken: {
+      Title: "Anthropic APIキー",
+      SubTitle: "自分のキーを使用してパスワードアクセス制限を迂回する",
+      Placeholder: "Anthropic APIキー",
+    },
+    GoogleToken: {
+      Title: "Google APIキー",
+      SubTitle: "自分のキーを使用してパスワードアクセス制限を迂回する",
+      Placeholder: "Google APIキー",
+    },
     Usage: {
       Title: "残高照会",
       SubTitle(used: any, total: any) {

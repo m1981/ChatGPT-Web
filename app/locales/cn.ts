@@ -124,6 +124,16 @@ const cn = {
       SubTitle: "使用自己的 Key 可绕过密码访问限制",
       Placeholder: "OpenAI API Key",
     },
+    AnthropicToken: {
+      Title: "Anthropic API Key",
+      SubTitle: "使用自己的 Key 可绕过密码访问限制",
+      Placeholder: "Anthropic API Key",
+    },
+    GoogleToken: {
+      Title: "Google API Key",
+      SubTitle: "使用自己的 Key 可绕过密码访问限制",
+      Placeholder: "Google API Key",
+    },
     Usage: {
       Title: "余额查询",
       SubTitle(used: any, total: any) {

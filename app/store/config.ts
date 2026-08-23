@@ -30,7 +30,7 @@ const DEFAULT_CONFIG = {
   disablePromptHint: false,
 
   modelConfig: {
-    model: "gpt-4o"  as ModelType,
+    model: "gpt-4o" as ModelType,
     temperature: 1,
     max_tokens: 128000,
     presence_penalty: 0,
@@ -48,18 +48,59 @@ export type ModelConfig = ChatConfig["modelConfig"];
 
 const ENABLE_GPT4 = true;
 
-export const ALL_MODELS = [
+export type ModelProvider = "openai" | "anthropic" | "google";
+
+export interface ModelInfo {
+  name: string;
+  displayName: string;
+  provider: ModelProvider;
+  available: boolean;
+}
+
+export const ALL_MODELS: readonly ModelInfo[] = [
   {
     name: "gpt-4o",
+    displayName: "GPT-4o",
+    provider: "openai",
     available: ENABLE_GPT4,
   },
   {
     name: "gpt-4o-mini",
+    displayName: "GPT-4o Mini",
+    provider: "openai",
+    available: true,
+  },
+  {
+    name: "claude-sonnet-5",
+    displayName: "Claude Sonnet 5",
+    provider: "anthropic",
+    available: true,
+  },
+  {
+    name: "claude-3-7-sonnet-latest",
+    displayName: "Claude 3.7 Sonnet",
+    provider: "anthropic",
+    available: true,
+  },
+  {
+    name: "claude-3-5-sonnet-latest",
+    displayName: "Claude 3.5 Sonnet",
+    provider: "anthropic",
+    available: true,
+  },
+  {
+    name: "gemini-3.7-flash",
+    displayName: "Gemini 3.7 Flash",
+    provider: "google",
     available: true,
   },
 ] as const;
 
 export type ModelType = (typeof ALL_MODELS)[number]["name"];
+
+export function getModelProvider(model: string): ModelProvider {
+  return ALL_MODELS.find((m) => m.name === model)?.provider ?? "openai";
+}
 
 export function limitNumber(
   x: number,

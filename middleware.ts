@@ -23,6 +23,7 @@ function getIP(req: NextRequest) {
 export function middleware(req: NextRequest) {
   const accessCode = req.headers.get("access-code");
   const token = req.headers.get("token");
+  const provider = req.headers.get("provider") ?? "openai";
   const hashedCode = md5.hash(accessCode ?? "").trim();
 
   console.log("[Auth] allowed hashed codes: ", [...serverConfig.codes]);
@@ -46,7 +47,11 @@ export function middleware(req: NextRequest) {
 
   // inject api key
   if (!token) {
-    const apiKey = serverConfig.apiKey;
+    const apiKey = {
+      openai: serverConfig.apiKey,
+      anthropic: serverConfig.anthropicApiKey,
+      google: serverConfig.geminiApiKey,
+    }[provider as "openai" | "anthropic" | "google"];
     if (apiKey) {
       console.log("[Auth] set system token");
       req.headers.set("token", apiKey);

@@ -127,6 +127,16 @@ const es: LocaleType = {
       SubTitle: "Utiliza tu clave para ignorar el límite de código de acceso",
       Placeholder: "Clave de la API de OpenAI",
     },
+    AnthropicToken: {
+      Title: "Clave de API de Anthropic",
+      SubTitle: "Utiliza tu clave para ignorar el límite de código de acceso",
+      Placeholder: "Clave de la API de Anthropic",
+    },
+    GoogleToken: {
+      Title: "Clave de API de Google",
+      SubTitle: "Utiliza tu clave para ignorar el límite de código de acceso",
+      Placeholder: "Clave de la API de Google",
+    },
     Usage: {
       Title: "Saldo de la cuenta",
       SubTitle(used: any, total: any) {

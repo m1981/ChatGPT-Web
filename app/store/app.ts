@@ -265,7 +265,7 @@ export const useChatStore = create<ChatStore>()(
         requestChatStream(sendMessages, {
           onMessage(content, done) {
             // stream response
-             botMessage.content = content ?? "";
+            botMessage.content = content ?? "";
             if (done) {
               botMessage.streaming = false;
               botMessage.content = content;
@@ -392,7 +392,7 @@ export const useChatStore = create<ChatStore>()(
           countMessages(session.messages) >= SUMMARIZE_MIN_LEN
         ) {
           requestWithPrompt(session.messages, Locale.Store.Prompt.Topic, {
-            model: "gpt-4o",
+            model: useAppConfig.getState().modelConfig.model,
           }).then((res) => {
             get().updateCurrentSession(
               (session) =>
@@ -432,14 +432,16 @@ export const useChatStore = create<ChatStore>()(
           session.sendMemory
         ) {
           requestChatStream(
-            toBeSummarizedMsgs.map(msg => ({...msg, content: msg.content ?? ""})).concat({
-              role: "system",
-              content: Locale.Store.Prompt.Summarize,
-              date: "",
-            }),
+            toBeSummarizedMsgs
+              .map((msg) => ({ ...msg, content: msg.content ?? "" }))
+              .concat({
+                role: "system",
+                content: Locale.Store.Prompt.Summarize,
+                date: "",
+              }),
             {
               filterBot: false,
-              model: "gpt-4o",
+              model: useAppConfig.getState().modelConfig.model,
               onMessage(message, done) {
                 session.memoryPrompt = message;
                 if (done) {

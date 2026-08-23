@@ -2,7 +2,9 @@ import type { ChatRequest, ChatResponse } from "./api/openai/typing";
 import {
   Message,
   ModelConfig,
+  ModelProvider,
   ModelType,
+  getModelProvider,
   useAccessStore,
   useAppConfig,
   useChatStore,
@@ -46,16 +48,22 @@ const makeRequestParam = (
   };
 };
 
-function getHeaders() {
+function getHeaders(provider: ModelProvider = "openai") {
   const accessStore = useAccessStore.getState();
-  let headers: Record<string, string> = {};
+  let headers: Record<string, string> = { provider };
 
   if (accessStore.enabledAccessControl()) {
     headers["access-code"] = accessStore.accessCode;
   }
 
-  if (accessStore.token && accessStore.token.length > 0) {
-    headers["token"] = accessStore.token;
+  const byokKey = {
+    openai: accessStore.token,
+    anthropic: accessStore.anthropicApiKey,
+    google: accessStore.googleApiKey,
+  }[provider];
+
+  if (byokKey && byokKey.length > 0) {
+    headers["token"] = byokKey;
   }
 
   return headers;
@@ -80,19 +88,26 @@ export async function requestChat(
     model?: ModelType;
   },
 ) {
-  const req: ChatRequest = makeRequestParam(messages, {
-    filterBot: true,
-    model: options?.model,
+  // Routed through the (provider-aware) streaming endpoint and buffered here,
+  // so this works for OpenAI/Anthropic/Google alike instead of only OpenAI's
+  // non-streaming REST shape.
+  return new Promise<ChatResponse | undefined>((resolve) => {
+    requestChatStream(messages, {
+      filterBot: true,
+      model: options?.model,
+      onMessage(message, done) {
+        if (done) {
+          resolve({
+            choices: [{ message: { role: "assistant", content: message } }],
+          } as ChatResponse);
+        }
+      },
+      onError(error) {
+        console.error("[Request Chat] ", error);
+        resolve(undefined);
+      },
+    });
   });
-
-  const res = await requestOpenaiClient("v1/chat/completions")(req);
-
-  try {
-    const response = (await res.json()) as ChatResponse;
-    return response;
-  } catch (error) {
-    console.error("[Request Chat] ", error, res.body);
-  }
 }
 
 export async function requestUsage() {
@@ -162,6 +177,9 @@ export async function requestChatStream(
     model: options?.model,
   });
 
+  const model = options?.model ?? useAppConfig.getState().modelConfig.model;
+  const provider = getModelProvider(model);
+
   console.log("[Request] ", req);
 
   const controller = new AbortController();
@@ -173,7 +191,7 @@ export async function requestChatStream(
       headers: {
         "Content-Type": "application/json",
         path: "v1/chat/completions",
-        ...getHeaders(),
+        ...getHeaders(provider),
       },
       body: JSON.stringify(req),
       signal: controller.signal,

@@ -127,6 +127,16 @@ const en: LocaleType = {
       SubTitle: "Use your key to ignore access code limit",
       Placeholder: "OpenAI API Key",
     },
+    AnthropicToken: {
+      Title: "Anthropic API Key",
+      SubTitle: "Use your key to ignore access code limit",
+      Placeholder: "Anthropic API Key",
+    },
+    GoogleToken: {
+      Title: "Google API Key",
+      SubTitle: "Use your key to ignore access code limit",
+      Placeholder: "Google API Key",
+    },
     Usage: {
       Title: "Account Balance",
       SubTitle(used: any, total: any) {

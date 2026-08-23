@@ -124,6 +124,16 @@ const tw: LocaleType = {
       SubTitle: "使用自己的 Key 可規避授權訪問限制",
       Placeholder: "OpenAI API Key",
     },
+    AnthropicToken: {
+      Title: "Anthropic API Key",
+      SubTitle: "使用自己的 Key 可規避授權訪問限制",
+      Placeholder: "Anthropic API Key",
+    },
+    GoogleToken: {
+      Title: "Google API Key",
+      SubTitle: "使用自己的 Key 可規避授權訪問限制",
+      Placeholder: "Google API Key",
+    },
     Usage: {
       Title: "帳戶餘額",
       SubTitle(used: any, total: any) {

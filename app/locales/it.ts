@@ -128,6 +128,18 @@ const it: LocaleType = {
         "Utilizzare la chiave per ignorare il limite del codice di accesso",
       Placeholder: "OpenAI API Key",
     },
+    AnthropicToken: {
+      Title: "Anthropic API Key",
+      SubTitle:
+        "Utilizzare la chiave per ignorare il limite del codice di accesso",
+      Placeholder: "Anthropic API Key",
+    },
+    GoogleToken: {
+      Title: "Google API Key",
+      SubTitle:
+        "Utilizzare la chiave per ignorare il limite del codice di accesso",
+      Placeholder: "Google API Key",
+    },
     Usage: {
       Title: "Bilancio Account",
       SubTitle(used: any, total: any) {

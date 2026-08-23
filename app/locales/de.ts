@@ -128,6 +128,18 @@ const de: LocaleType = {
         "Verwenden Sie Ihren Schlüssel, um das Zugangscode-Limit zu ignorieren",
       Placeholder: "OpenAI API-Schlüssel",
     },
+    AnthropicToken: {
+      Title: "Anthropic API-Schlüssel",
+      SubTitle:
+        "Verwenden Sie Ihren Schlüssel, um das Zugangscode-Limit zu ignorieren",
+      Placeholder: "Anthropic API-Schlüssel",
+    },
+    GoogleToken: {
+      Title: "Google API-Schlüssel",
+      SubTitle:
+        "Verwenden Sie Ihren Schlüssel, um das Zugangscode-Limit zu ignorieren",
+      Placeholder: "Google API-Schlüssel",
+    },
     Usage: {
       Title: "Kontostand",
       SubTitle(used: any, total: any) {

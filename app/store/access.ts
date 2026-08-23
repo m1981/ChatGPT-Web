@@ -18,11 +18,16 @@ import DOMPurify from "dompurify";
 
 export interface AccessControlStore {
   accessCode: string;
+  // BYOK key for OpenAI.
   token: string;
+  anthropicApiKey: string;
+  googleApiKey: string;
 
   needCode: boolean;
 
   updateToken: (_: string) => void;
+  updateAnthropicApiKey: (_: string) => void;
+  updateGoogleApiKey: (_: string) => void;
   updateCode: (_: string) => void;
   enabledAccessControl: () => boolean;
   isAuthorized: () => boolean;
@@ -37,6 +42,8 @@ export const useAccessStore = create<AccessControlStore>()(
   persist(
     (set, get) => ({
       token: "",
+      anthropicApiKey: "",
+      googleApiKey: "",
       accessCode: "",
       needCode: true,
       enabledAccessControl() {
@@ -49,6 +56,12 @@ export const useAccessStore = create<AccessControlStore>()(
       },
       updateToken(token: string) {
         set((state) => ({ token: DOMPurify.sanitize(token) }));
+      },
+      updateAnthropicApiKey(key: string) {
+        set((state) => ({ anthropicApiKey: DOMPurify.sanitize(key) }));
+      },
+      updateGoogleApiKey(key: string) {
+        set((state) => ({ googleApiKey: DOMPurify.sanitize(key) }));
       },
       isAuthorized() {
         // has token or has code or disabled access control
@@ -79,11 +92,10 @@ export const useAccessStore = create<AccessControlStore>()(
             fetchState = 2;
           });
       },
-
-}),
-{
-  name: ACCESS_KEY,
-  version: 1,
+    }),
+    {
+      name: ACCESS_KEY,
+      version: 1,
     },
   ),
 );

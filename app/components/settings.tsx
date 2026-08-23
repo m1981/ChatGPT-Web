@@ -24,6 +24,7 @@ import {
   useAccessStore,
   ModalConfigValidator,
   useAppConfig,
+  getModelProvider,
 } from "../store";
 import { Avatar } from "./chat";
 
@@ -226,7 +227,10 @@ export function Settings() {
   const customCount = promptStore.getUserPrompts().length ?? 0;
   const [shouldShowPromptModal, setShowPromptModal] = useState(false);
 
-  const showUsage = accessStore.isAuthorized();
+  // The usage/billing endpoint is OpenAI-specific.
+  const showUsage =
+    accessStore.isAuthorized() &&
+    getModelProvider(config.modelConfig.model) === "openai";
   useEffect(() => {
     // checks per minutes
     checkUpdate();
@@ -397,7 +401,6 @@ export function Settings() {
               ))}
             </select>
           </SettingItem>
-
         </List>
 
         <List>
@@ -429,6 +432,34 @@ export function Settings() {
               placeholder={Locale.Settings.Token.Placeholder}
               onChange={(e) => {
                 accessStore.updateToken(e.currentTarget.value);
+              }}
+            />
+          </SettingItem>
+
+          <SettingItem
+            title={Locale.Settings.AnthropicToken.Title}
+            subTitle={Locale.Settings.AnthropicToken.SubTitle}
+          >
+            <PasswordInput
+              value={accessStore.anthropicApiKey}
+              type="text"
+              placeholder={Locale.Settings.AnthropicToken.Placeholder}
+              onChange={(e) => {
+                accessStore.updateAnthropicApiKey(e.currentTarget.value);
+              }}
+            />
+          </SettingItem>
+
+          <SettingItem
+            title={Locale.Settings.GoogleToken.Title}
+            subTitle={Locale.Settings.GoogleToken.SubTitle}
+          >
+            <PasswordInput
+              value={accessStore.googleApiKey}
+              type="text"
+              placeholder={Locale.Settings.GoogleToken.Placeholder}
+              onChange={(e) => {
+                accessStore.updateGoogleApiKey(e.currentTarget.value);
               }}
             />
           </SettingItem>
@@ -475,8 +506,6 @@ export function Settings() {
               }
             ></InputRange>
           </SettingItem>
-
-
         </List>
 
         <List>
@@ -495,8 +524,6 @@ export function Settings() {
               }
             ></input>
           </SettingItem>
-
-
         </List>
 
         <List>
@@ -514,7 +541,7 @@ export function Settings() {
             >
               {ALL_MODELS.map((v) => (
                 <option value={v.name} key={v.name} disabled={!v.available}>
-                  {v.name}
+                  {v.displayName}
                 </option>
               ))}
             </select>
@@ -540,7 +567,6 @@ export function Settings() {
               }}
             ></InputRange>
           </SettingItem>
-
         </List>
 
         {shouldShowPromptModal && (
