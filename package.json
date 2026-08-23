@@ -3,6 +3,9 @@
   "version": "1.9.3",
   "private": false,
   "license": "MIT",
+  "engines": {
+    "node": "24.x"
+  },
   "scripts": {
     "dev": "yarn fetch && next dev",
     "build": "yarn fetch && next build",
