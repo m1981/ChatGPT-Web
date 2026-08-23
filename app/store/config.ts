@@ -30,7 +30,7 @@ const DEFAULT_CONFIG = {
   disablePromptHint: false,
 
   modelConfig: {
-    model: "gpt-4o" as ModelType,
+    model: "claude-sonnet-5" as ModelType,
     temperature: 0,
     max_tokens: 128000,
     presence_penalty: 0,
@@ -46,8 +46,6 @@ export type ChatConfigStore = ChatConfig & {
 
 export type ModelConfig = ChatConfig["modelConfig"];
 
-const ENABLE_GPT4 = true;
-
 export type ModelProvider = "openai" | "anthropic" | "google";
 
 export interface ModelInfo {
@@ -59,32 +57,8 @@ export interface ModelInfo {
 
 export const ALL_MODELS: readonly ModelInfo[] = [
   {
-    name: "gpt-4o",
-    displayName: "GPT-4o",
-    provider: "openai",
-    available: ENABLE_GPT4,
-  },
-  {
-    name: "gpt-4o-mini",
-    displayName: "GPT-4o Mini",
-    provider: "openai",
-    available: true,
-  },
-  {
     name: "claude-sonnet-5",
     displayName: "Claude Sonnet 5",
-    provider: "anthropic",
-    available: true,
-  },
-  {
-    name: "claude-3-7-sonnet-latest",
-    displayName: "Claude 3.7 Sonnet",
-    provider: "anthropic",
-    available: true,
-  },
-  {
-    name: "claude-3-5-sonnet-latest",
-    displayName: "Claude 3.5 Sonnet",
     provider: "anthropic",
     available: true,
   },

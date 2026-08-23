@@ -547,21 +547,23 @@ export function Settings() {
                 });
               }}
             >
-              {(["openai", "anthropic", "google"] as const).map((provider) => (
-                <optgroup label={provider.toUpperCase()} key={provider}>
-                  {ALL_MODELS.filter((v) => v.provider === provider).map(
-                    (v) => (
-                      <option
-                        value={v.name}
-                        key={v.name}
-                        disabled={!v.available}
-                      >
-                        {v.displayName}
-                      </option>
-                    ),
-                  )}
-                </optgroup>
-              ))}
+              {Array.from(new Set(ALL_MODELS.map((v) => v.provider))).map(
+                (provider) => (
+                  <optgroup label={provider.toUpperCase()} key={provider}>
+                    {ALL_MODELS.filter((v) => v.provider === provider).map(
+                      (v) => (
+                        <option
+                          value={v.name}
+                          key={v.name}
+                          disabled={!v.available}
+                        >
+                          {v.displayName}
+                        </option>
+                      ),
+                    )}
+                  </optgroup>
+                ),
+              )}
             </select>
           </SettingItem>
 
