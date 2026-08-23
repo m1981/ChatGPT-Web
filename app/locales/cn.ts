@@ -152,6 +152,7 @@ const cn = {
     Temperature: {
       Title: "随机性 (temperature)",
       SubTitle: "值越大，回复越随机，大于 1 的值可能会导致乱码",
+      NotSupported: "Claude 模型不支持此设置",
     },
     MaxTokens: {
       Title: "单次回复限制 (max_tokens)",

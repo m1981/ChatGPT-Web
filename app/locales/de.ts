@@ -158,6 +158,7 @@ const de: LocaleType = {
     Temperature: {
       Title: "Temperature", //Temperatur
       SubTitle: "Ein größerer Wert führt zu zufälligeren Antworten",
+      NotSupported: "Für Claude-Modelle nicht unterstützt",
     },
     MaxTokens: {
       Title: "Max Tokens", //Maximale Token

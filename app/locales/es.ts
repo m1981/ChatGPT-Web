@@ -155,6 +155,7 @@ const es: LocaleType = {
     Temperature: {
       Title: "Temperatura",
       SubTitle: "Un valor mayor genera una salida más aleatoria",
+      NotSupported: "No compatible con los modelos Claude",
     },
     MaxTokens: {
       Title: "Máximo de tokens",

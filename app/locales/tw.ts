@@ -152,6 +152,7 @@ const tw: LocaleType = {
     Temperature: {
       Title: "隨機性 (temperature)",
       SubTitle: "值越大，回復越隨機",
+      NotSupported: "Claude 模型不支援此設定",
     },
     MaxTokens: {
       Title: "單次回復限制 (max_tokens)",

@@ -155,6 +155,7 @@ const en: LocaleType = {
     Temperature: {
       Title: "Temperature",
       SubTitle: "A larger value makes the more random output",
+      NotSupported: "Not supported for Claude models",
     },
     MaxTokens: {
       Title: "Max Tokens",

@@ -157,6 +157,7 @@ const jp = {
       Title: "ランダム性 (temperature)",
       SubTitle:
         "値が大きいほど、回答がランダムになります。1以上の値には文字化けが含まれる可能性があります。",
+      NotSupported: "Claude モデルではサポートされていません",
     },
     MaxTokens: {
       Title: "シングルレスポンス制限 (max_tokens)",

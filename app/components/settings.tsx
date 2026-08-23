@@ -569,9 +569,16 @@ export function Settings() {
 
           <SettingItem
             title={Locale.Settings.Temperature.Title}
-            subTitle={Locale.Settings.Temperature.SubTitle}
+            subTitle={
+              getModelProvider(config.modelConfig.model) === "anthropic"
+                ? Locale.Settings.Temperature.NotSupported
+                : Locale.Settings.Temperature.SubTitle
+            }
           >
             <InputRange
+              disabled={
+                getModelProvider(config.modelConfig.model) === "anthropic"
+              }
               value={config.modelConfig.temperature?.toFixed(1)}
               min="0"
               max={getMaxTemperature(

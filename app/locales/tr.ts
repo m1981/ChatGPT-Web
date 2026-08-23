@@ -156,6 +156,7 @@ const tr: LocaleType = {
       Title: "Gerçeklik",
       SubTitle:
         "Daha büyük bir değer girildiğinde gerçeklik oranı düşer ve daha rastgele çıktılar üretir",
+      NotSupported: "Claude modelleri için desteklenmiyor",
     },
     MaxTokens: {
       Title: "Maksimum Belirteç",

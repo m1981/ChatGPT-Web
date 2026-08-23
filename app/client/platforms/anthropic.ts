@@ -1,15 +1,10 @@
 import type { Platform, PlatformRequestOptions, ParsedDelta } from "./types";
-import { getMaxTemperature } from "../../store/config";
 
 const ANTHROPIC_VERSION = "2023-06-01";
 const DEFAULT_MAX_TOKENS = 4096;
-// The UI's shared temperature slider doesn't know which model was active
-// when the value was set (e.g. set on GPT-4o, then switched to Claude), so
-// clamp defensively here regardless of the stored value.
-const MAX_TEMPERATURE = getMaxTemperature("anthropic");
 
 function buildRequest(opts: PlatformRequestOptions) {
-  const { messages = [], model, temperature, max_tokens } = opts.body ?? {};
+  const { messages = [], model, max_tokens } = opts.body ?? {};
 
   const system: string[] = [];
   const anthropicMessages = messages
@@ -44,9 +39,9 @@ function buildRequest(opts: PlatformRequestOptions) {
     payload.system = system.join("\n\n");
   }
 
-  if (typeof temperature === "number") {
-    payload.temperature = Math.min(temperature, MAX_TEMPERATURE);
-  }
+  // Do not send temperature/top_p/top_k: current-generation Claude models
+  // (Sonnet 5, Opus 5, etc.) run extended thinking adaptively by default,
+  // and the API rejects sampling params with a 400 while thinking is active.
 
   const baseUrl = opts.baseUrl.replace(/\/$/, "");
 

@@ -158,6 +158,7 @@ const it: LocaleType = {
     Temperature: {
       Title: "Temperature",
       SubTitle: "Un valore maggiore rende l'output più casuale",
+      NotSupported: "Non supportato per i modelli Claude",
     },
     MaxTokens: {
       Title: "Token massimi",
