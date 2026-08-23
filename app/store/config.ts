@@ -102,6 +102,11 @@ export function getModelProvider(model: string): ModelProvider {
   return ALL_MODELS.find((m) => m.name === model)?.provider ?? "openai";
 }
 
+// Anthropic rejects temperature > 1.0; OpenAI/Gemini allow up to 2.0.
+export function getMaxTemperature(provider: ModelProvider): number {
+  return provider === "anthropic" ? 1.0 : 2.0;
+}
+
 export function limitNumber(
   x: number,
   min: number,

@@ -25,6 +25,7 @@ import {
   ModalConfigValidator,
   useAppConfig,
   getModelProvider,
+  getMaxTemperature,
 } from "../store";
 import { Avatar } from "./chat";
 
@@ -531,18 +532,35 @@ export function Settings() {
             <select
               value={config.modelConfig.model}
               onChange={(e) => {
-                updateConfig(
-                  (config) =>
-                    (config.modelConfig.model = ModalConfigValidator.model(
-                      e.currentTarget.value,
-                    )),
+                const model = ModalConfigValidator.model(e.currentTarget.value);
+                const maxTemperature = getMaxTemperature(
+                  getModelProvider(model),
                 );
+                updateConfig((config) => {
+                  config.modelConfig.model = model;
+                  // Switching providers may make the current temperature
+                  // invalid (e.g. Anthropic caps at 1.0, OpenAI allows 2.0).
+                  config.modelConfig.temperature = Math.min(
+                    config.modelConfig.temperature,
+                    maxTemperature,
+                  );
+                });
               }}
             >
-              {ALL_MODELS.map((v) => (
-                <option value={v.name} key={v.name} disabled={!v.available}>
-                  {v.displayName}
-                </option>
+              {(["openai", "anthropic", "google"] as const).map((provider) => (
+                <optgroup label={provider.toUpperCase()} key={provider}>
+                  {ALL_MODELS.filter((v) => v.provider === provider).map(
+                    (v) => (
+                      <option
+                        value={v.name}
+                        key={v.name}
+                        disabled={!v.available}
+                      >
+                        {v.displayName}
+                      </option>
+                    ),
+                  )}
+                </optgroup>
               ))}
             </select>
           </SettingItem>
@@ -554,7 +572,9 @@ export function Settings() {
             <InputRange
               value={config.modelConfig.temperature?.toFixed(1)}
               min="0"
-              max="2"
+              max={getMaxTemperature(
+                getModelProvider(config.modelConfig.model),
+              ).toString()}
               step="0.1"
               onChange={(e) => {
                 updateConfig(

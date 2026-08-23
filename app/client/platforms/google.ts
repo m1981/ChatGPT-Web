@@ -52,12 +52,23 @@ function buildRequest(opts: PlatformRequestOptions) {
 }
 
 function parseDelta(eventData: string): ParsedDelta {
-  const json = JSON.parse(eventData);
-  const text = json.candidates?.[0]?.content?.parts
-    ?.map((p: any) => p.text ?? "")
-    .join("");
+  if (!eventData) {
+    return {};
+  }
 
-  return { text: text || undefined };
+  try {
+    const json = JSON.parse(eventData);
+    const text = json.candidates?.[0]?.content?.parts
+      ?.map((p: any) => p.text ?? "")
+      .join("");
+
+    return { text: text || undefined };
+  } catch (e) {
+    // A malformed/partial chunk shouldn't kill the stream — skip it and let
+    // the route's post-loop close() handle actual stream termination.
+    console.error("[Gemini] failed to parse chunk", eventData, e);
+    return {};
+  }
 }
 
 export const googlePlatform: Platform = { buildRequest, parseDelta };

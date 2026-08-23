@@ -1,7 +1,12 @@
 import type { Platform, PlatformRequestOptions, ParsedDelta } from "./types";
+import { getMaxTemperature } from "../../store/config";
 
 const ANTHROPIC_VERSION = "2023-06-01";
 const DEFAULT_MAX_TOKENS = 4096;
+// The UI's shared temperature slider doesn't know which model was active
+// when the value was set (e.g. set on GPT-4o, then switched to Claude), so
+// clamp defensively here regardless of the stored value.
+const MAX_TEMPERATURE = getMaxTemperature("anthropic");
 
 function buildRequest(opts: PlatformRequestOptions) {
   const { messages = [], model, temperature, max_tokens } = opts.body ?? {};
@@ -20,6 +25,13 @@ function buildRequest(opts: PlatformRequestOptions) {
       content: m.content ?? "",
     }));
 
+  // Anthropic requires a non-empty messages array starting with a user turn.
+  if (anthropicMessages.length === 0) {
+    anthropicMessages.push({ role: "user", content: "..." });
+  } else if (anthropicMessages[0].role === "assistant") {
+    anthropicMessages.unshift({ role: "user", content: "..." });
+  }
+
   const payload: Record<string, any> = {
     model,
     // Anthropic requires max_tokens; the client omits it from the outgoing body.
@@ -33,7 +45,7 @@ function buildRequest(opts: PlatformRequestOptions) {
   }
 
   if (typeof temperature === "number") {
-    payload.temperature = temperature;
+    payload.temperature = Math.min(temperature, MAX_TEMPERATURE);
   }
 
   const baseUrl = opts.baseUrl.replace(/\/$/, "");
